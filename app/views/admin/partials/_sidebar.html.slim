@@ -1,0 +1,58 @@
+aside.sidebar.sidebar-left
+  .sidebar-profile
+    .avatar
+      = image_tag ('missing.png'), :class => 'img-circle profile-image'
+      i.on.border-dark.animated.bounceIn
+    .profile-body.dropdown
+      a.dropdown-toggle aria-expanded="false" data-toggle="dropdown" href="javascript:void(0);" /
+      h4
+        = current_user.full_name
+        span.caret
+      small.title = current_user.role_id
+      ul.dropdown-menu.animated.fadeInRight role="menu" 
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-user
+            | My Account
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-envelope
+            | Messages
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-cog
+            | Settings
+        li.divider
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-sign-out
+            | Logout
+  nav
+  h5.sidebar-header Navigation
+  ul.nav.nav-pills.nav-stacked
+    li.active
+      a href="/" title="Dashboard" 
+        i.fa.fa-fw.fa-tachometer
+        | Dashboard
+    li
+      a href="#"
+        i.fa.fa-users
+        | GS Students
+    li
+      a href="#"
+        i.fa.fa-users
+        | HS Students
+    li
+      a href="#"
+        i.fa.fa-file-o
+        | Tuition Fees
+    li
+      a href="#"
+        i.fa.fa-money
+        | Payments
+
+  

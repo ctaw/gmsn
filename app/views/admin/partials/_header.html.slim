@@ -1,0 +1,44 @@
+header#header
+  /! logo start
+  .brand
+    a.logo href="/" 
+      i.fa.fa-book
+      span GMSN
+  /! logo end
+  
+  ul.nav.navbar-nav.navbar-right
+    li.dropdown.profile.hidden-xs
+      a.dropdown-toggle data-toggle="dropdown" href="javascript:void(0);" 
+        span.meta
+          span.avatar
+            = image_tag ('missing.png'), :class => "img-circle"
+          span.text = current_user.full_name
+          span.caret
+      ul.dropdown-menu.animated.fadeInRight role="menu" 
+        li
+
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-user
+            | My Account
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-envelope
+            | Messages
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-cog
+            | Settings
+        li.divider
+        li
+          a href="javascript:void(0);" 
+            span.icon
+              i.fa.fa-sign-out
+            | Logout
+
+    li.toggle-navigation.toggle-right
+      button#toggle-right.sidebar-toggle
+        i.fa.fa-indent
