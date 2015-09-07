@@ -28,6 +28,7 @@ gem 'devise'
 gem 'slim'
 gem "paperclip", "~> 4.3"
 gem 'rails_12factor', group: :production
+gem 'puma'
 # ================= Added Gems =================
 
 # Use ActiveModel has_secure_password
