@@ -34,10 +34,7 @@ header#header
             | Settings
         li.divider
         li
-          a href="javascript:void(0);" 
-            span.icon
-              i.fa.fa-sign-out
-            | Logout
+          = link_to "<i class='fa fa-sign-out'></i> Logout".html_safe, destroy_user_session_path, method: :delete
 
     li.toggle-navigation.toggle-right
       button#toggle-right.sidebar-toggle

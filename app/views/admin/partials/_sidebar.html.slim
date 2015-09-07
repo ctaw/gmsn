@@ -27,10 +27,8 @@ aside.sidebar.sidebar-left
             | Settings
         li.divider
         li
-          a href="javascript:void(0);" 
-            span.icon
-              i.fa.fa-sign-out
-            | Logout
+          = link_to "<i class='fa fa-sign-out'></i> Logout".html_safe, destroy_user_session_path, method: :delete
+            
   nav
   h5.sidebar-header Navigation
   ul.nav.nav-pills.nav-stacked
