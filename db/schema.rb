@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.string   "guardian_name"
     t.integer  "contact_number"
     t.text     "present_address"
+    t.integer  "gender"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.decimal  "other_fees"
     t.decimal  "upon_enrollment"
     t.integer  "payment_type"
+    t.decimal  "total_fees"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

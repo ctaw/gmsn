@@ -19,8 +19,13 @@ class Admin::StudentsController < AdminController
     @fee_id = TuitionFee.where(:year_level => @yr_lvl).first
     @student.tuition_fee_id = @fee_id.id
 
-    if params[:student][:balance] == ""
+    # If Fully Paid
+    if @fp == 1
       @student.balance = 0
+    elsif params[:student][:balance] == ""
+      @student.balance = @fee_id.total_fees
+    else
+      @student.balance = ""
     end
     
     if @student.save
@@ -32,7 +37,7 @@ class Admin::StudentsController < AdminController
 
   def show
     @tuition_fee = TuitionFee.where(:year_level => @student.year_level).first
-    @payments = Payment.select("id, date_paid, amount_paid, referrence_number").where(:student_number => @student.student_number).order("date_paid DESC")
+    @payments = Payment.select("id, date_paid, amount_paid, referrence_number, discount_amount").where(:student_number => @student.student_number).order("date_paid DESC")
   end
 
   def edit    

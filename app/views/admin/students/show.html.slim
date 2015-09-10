@@ -67,7 +67,7 @@ section#main-content.animated.fadeInUp
             .col-md-8
               = number_to_currency(@student.balance, :unit => "₱")
   .row
-    .col-md-6
+    .col-md-12
       .panel.panel-default
         .panel-heading
           h3.panel-title Payment History
@@ -79,6 +79,7 @@ section#main-content.animated.fadeInUp
                 th Date Paid
                 th Amount Paid
                 th Ref. Number
+                th Discount
             tbody
               -if @payments == []
                 tr
@@ -88,5 +89,11 @@ section#main-content.animated.fadeInUp
                   tr
                     td = p.id
                     td = format_date(p.date_paid)
-                    td = number_to_currency(p.amount_paid, :unit => "₱")               
+                    td = number_to_currency(p.amount_paid, :unit => "₱")
                     td = p.referrence_number
+                    td
+                      -if p.discount_amount.nil? 
+                        = "0"
+                      -else
+                        = number_to_currency(p.discount_amount, :unit => "₱")
+                      

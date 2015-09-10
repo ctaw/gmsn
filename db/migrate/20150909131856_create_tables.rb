@@ -14,6 +14,7 @@ class CreateTables < ActiveRecord::Migration
       t.string :guardian_name
       t.integer :contact_number
       t.text :present_address
+      t.integer :gender
       t.timestamps
     end
 
@@ -24,6 +25,7 @@ class CreateTables < ActiveRecord::Migration
       t.decimal :other_fees
       t.decimal :upon_enrollment
       t.integer :payment_type # Annual - Semestrail - Quarterly - LDP
+      t.decimal :total_fees
       t.timestamps
     end
 

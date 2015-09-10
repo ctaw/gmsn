@@ -4,5 +4,5 @@ end
 
 # Example Data
 if TuitionFee.all.blank?
-  TuitionFee.create(:year_level => 1, :tuition_fees => 40000, :misc_fees => 10000, :other_fees => 2000, :upon_enrollment => 22000, :payment_type => 1)
+  TuitionFee.create(:year_level => 1, :tuition_fees => 40000, :misc_fees => 10000, :other_fees => 2000, :upon_enrollment => 22000, :payment_type => 1, :total_fees => 52000)
 end
