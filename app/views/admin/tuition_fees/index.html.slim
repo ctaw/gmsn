@@ -1,0 +1,45 @@
+.pageheader
+  h1 Tuition Fees
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li.active Tuition Fees
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-12
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Data Table
+          .actions.pull-right
+            a href="tuition_fees/new" 
+              i.fa.fa-plus
+        .panel-body
+          .table-responsive
+            table.table.table-bordered.table-striped
+              thead
+                tr
+                  th Year Level
+                  th Tuition Fees
+                  th Misc. Fees
+                  th Other Fees
+                  th Upon Enrollment
+                  th Payment Type
+                  th
+              tbody
+                -if @tuition_fees == []
+                  tr
+                    td colspan="7" No records
+                -else
+                 - @tuition_fees.each do |tf|
+                   tr
+                    td = "Grade #{tf.year_level}"
+                    td = number_to_currency(tf.tuition_fees, :unit => "₱")
+                    td = number_to_currency(tf.misc_fees, :unit => "₱")
+                    td = number_to_currency(tf.other_fees, :unit => "₱")
+                    td = number_to_currency(tf.upon_enrollment, :unit => "₱")
+                    td = tf.get_payment_type
+                    td style=('width: 2%;')
+                      a href="tuition_fees/#{tf.id}/edit"
+                        i.fa.fa-pencil
+

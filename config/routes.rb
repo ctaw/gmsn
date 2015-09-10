@@ -7,5 +7,7 @@ Rails.application.routes.draw do
   namespace :admin do 
     resources :dashboard
     resources :students
+    resources :tuition_fees
+    resources :payments
   end
 end

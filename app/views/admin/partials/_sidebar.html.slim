@@ -40,8 +40,8 @@ aside.sidebar.sidebar-left
       a href="/admin/students"
         i.fa.fa-users
         | Students
-    li
-      a href="#"
+    li class="#{params[:controller] == 'admin/tuition_fees' ? 'active' : ''}"
+      a href="/admin/tuition_fees"
         i.fa.fa-file-o
         | Tuition Fees
     li
