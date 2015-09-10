@@ -1,0 +1,92 @@
+.pageheader
+  h1 Students
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li Students
+      li.active Information
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-6
+      .panel.panel-primary
+        .panel-heading
+          h3.panel-title = @student.full_name
+        .panel-body
+          .row
+            label.col-md-4 Student Number
+            .col-md-8
+              = @student.student_number
+          .row
+            label.col-md-4 Yr. / Level
+            .col-md-8
+              = "Grade #{@student.year_level}"
+          .row
+            label.col-md-4 S.Y.
+            .col-md-8
+              = @student.school_year
+          br
+          .row
+            label.col-md-4 Guardian
+            .col-md-8
+              = @student.guardian_name
+          .row
+            label.col-md-4 Contact Number
+            .col-md-8
+              = @student.contact_number
+          .row
+            label.col-md-4 Address
+            .col-md-8
+              = @student.present_address
+    
+    .col-md-6
+      .panel.panel-solid-default
+        .panel-heading
+          h3.panel-title Tuition Fee Details
+        .panel-body
+          .row
+            label.col-md-4 Tuition Fees
+            .col-md-8
+              = number_to_currency(@tuition_fee.tuition_fees, :unit => "₱")
+          .row
+            label.col-md-4 Miscellaneous Fees
+            .col-md-8
+              = number_to_currency(@tuition_fee.misc_fees, :unit => "₱")
+          .row
+            label.col-md-4 Other Fees
+            .col-md-8
+              = number_to_currency(@tuition_fee.other_fees, :unit => "₱")
+          .row
+            label.col-md-4 Regular Scheme
+            .col-md-8
+              = @tuition_fee.get_payment_type
+          br
+          br
+          .row
+            label.col-md-4 Regular Scheme
+            .col-md-8
+              = number_to_currency(@student.balance, :unit => "₱")
+  .row
+    .col-md-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Payment History
+        .panel-body
+          table.table.table-striped
+            thead
+              tr
+                th #
+                th Date Paid
+                th Amount Paid
+                th Ref. Number
+            tbody
+              -if @payments == []
+                tr
+                  td colspan="4" No records
+              -else
+                - @payments.each do |p|
+                  tr
+                    td = p.id
+                    td = format_date(p.date_paid)
+                    td = number_to_currency(p.amount_paid, :unit => "₱")               
+                    td = p.referrence_number

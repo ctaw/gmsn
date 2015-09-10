@@ -1,0 +1,46 @@
+.pageheader
+  h1 GS Students
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li.active GS Students
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-12
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Data Table
+          .actions.pull-right
+            a href="students/new" 
+              i.fa.fa-plus
+        .panel-body
+          .table-responsive
+            table.table.table-bordered.table-striped
+              thead
+                tr
+                  th Last Name
+                  th First Name
+                  th Student No.
+                  th Level
+                  th Balance
+                  th
+              tbody
+                -if @students == []
+                  tr
+                    td colspan="6" No records
+                -else
+                 - @students.each do |s|
+                   tr
+                    td = s.last_name
+                    td = s.first_name
+                    td = s.student_number
+                    td = s.year_level
+                    td = number_to_currency(s.balance, :unit => "₱")
+                    td style=('width: 2%;')
+                      a href="students/#{s.id}"
+                        i.fa.fa-eye
+
+
+              =will_paginate @students, :param_name=>"students",:previous_label => '<i class="fa fa-chevron-left"></i>'.html_safe, :next_label => '<i class="fa fa-chevron-right"></i>'.html_safe
+                   

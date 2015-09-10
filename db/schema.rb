@@ -11,10 +11,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150907173409) do
+ActiveRecord::Schema.define(version: 20150909131856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "payments", force: :cascade do |t|
+    t.integer  "student_number"
+    t.string   "referrence_number"
+    t.boolean  "discounted"
+    t.decimal  "discount_amount"
+    t.decimal  "amount_paid"
+    t.datetime "date_paid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
+    t.string   "student_number"
+    t.string   "school_year"
+    t.integer  "payment_method"
+    t.integer  "year_level"
+    t.decimal  "balance"
+    t.integer  "tuition_fee_id"
+    t.string   "guardian_name"
+    t.integer  "contact_number"
+    t.text     "present_address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tuition_fees", force: :cascade do |t|
+    t.integer  "year_level"
+    t.decimal  "tuition_fees"
+    t.decimal  "misc_fees"
+    t.decimal  "other_fees"
+    t.decimal  "upon_enrollment"
+    t.integer  "payment_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

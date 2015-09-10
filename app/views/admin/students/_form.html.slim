@@ -1,0 +1,51 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Student Information
+      .panel-body
+        = form_for([:admin, @student], :html => {:class => "form-horizontal form-border"}) do |f|
+          .form-group
+            label.col-sm-3.control-label First Name
+            .col-sm-6
+              = f.text_field :first_name, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Middle Name
+            .col-sm-6
+              = f.text_field :middle_name, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Last Name
+            .col-sm-6
+              = f.text_field :last_name, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Student No.
+            .col-sm-6
+              = f.text_field :student_number, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              = f.text_field :school_year, :class=>"form-control", :placeholder => "School Year"
+            .col-sm-3
+              =f.select(:year_level, options_for_select(@year_level,f.object.year_level),{},:class=>"form-control")
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              = f.text_field :balance, :class=>"form-control", :placeholder => "Balance"
+            .col-sm-3
+              =f.select(:payment_method, options_for_select(@payment_method,f.object.payment_method),{},:class=>"form-control")
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              = f.text_field :guardian_name, :class=>"form-control", :placeholder => "Guardian"
+            .col-sm-3
+              = f.text_field :contact_number, :class=>"form-control", :placeholder => "Contact Number"
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-6
+              = f.text_field :present_address, :class=>"form-control", :placeholder => "Present Address"
+          .row 
+            .col-md-12
+              hr
+              .btn-group.pull-right
+                a.btn.btn-default href="/admin/students" Cancel
+                = f.submit "Save", :class => "btn btn-success"

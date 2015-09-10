@@ -32,18 +32,14 @@ aside.sidebar.sidebar-left
   nav
   h5.sidebar-header Navigation
   ul.nav.nav-pills.nav-stacked
-    li.active
-      a href="/" title="Dashboard" 
+    li class="#{params[:controller] == 'admin/dashboard' ? 'active' : ''}"
+      a href="/admin/dashboard" title="Dashboard" 
         i.fa.fa-fw.fa-tachometer
         | Dashboard
-    li
-      a href="#"
+    li class="#{params[:controller] == 'admin/students' ? 'active' : ''}"
+      a href="/admin/students"
         i.fa.fa-users
-        | GS Students
-    li
-      a href="#"
-        i.fa.fa-users
-        | HS Students
+        | Students
     li
       a href="#"
         i.fa.fa-file-o
