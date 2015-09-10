@@ -44,8 +44,8 @@ aside.sidebar.sidebar-left
       a href="/admin/tuition_fees"
         i.fa.fa-file-o
         | Tuition Fees
-    li
-      a href="#"
+    li class="#{params[:controller] == 'admin/payments' ? 'active' : ''}"
+      a href="/admin/payments/new"
         i.fa.fa-money
         | Payments
 

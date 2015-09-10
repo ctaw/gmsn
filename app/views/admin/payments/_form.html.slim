@@ -1,0 +1,35 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Payment Form
+      .panel-body
+        = form_for([:admin, @payment], :html => {:class => "form-horizontal form-border"}) do |f|
+          .form-group
+            label.col-sm-3.control-label Referrence_number
+            .col-sm-6
+              = f.text_field :referrence_number, :class=>"form-control", :disabled => "disabled"
+          .form-group
+            label.col-sm-3.control-label Student Number
+            .col-sm-6
+              = f.text_field :student_number, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              =f.select(:discounted, options_for_select(@discounted,f.object.discounted),{},:class=>"form-control")
+            .col-sm-3
+              = f.text_field :discount_amount, :class=>"form-control", :placeholder => "Discounted Amount"
+          .form-group
+            label.col-sm-3.control-label Amount Paid
+            .col-sm-6
+              = f.text_field :amount_paid, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Date Paid
+            .col-sm-6
+              = f.text_field :date_paid, :class=>"form-control date "
+          .row 
+            .col-md-12
+              hr
+              .btn-group.pull-right
+                a.btn.btn-default href="/admin/payments" Cancel
+                = f.submit "Save", :class => "btn btn-success"

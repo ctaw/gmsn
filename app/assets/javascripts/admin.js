@@ -4,3 +4,5 @@
 //= require_tree ./vendor/validators
 //= require_tree ./vendor/moment
 //= require_tree ./vendor/datepicker
+
+//= require_tree ./admin/init
