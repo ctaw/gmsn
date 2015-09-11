@@ -13,6 +13,10 @@ class Admin::TuitionFeesController < AdminController
 
   def create
     @tuition_fee = TuitionFee.new(tuition_fee_params)
+    @tf = params[:tuition_fee][:tuition_fees]
+    @mf = params[:tuition_fee][:misc_fees]
+    @of = params[:tuition_fee][:other_fees]
+    @tuition_fee.total_fees = (@tf.to_f + @mf.to_f + @of.to_f)
     if @tuition_fee.save
       redirect_to "/admin/tuition_fees"
     else
@@ -25,6 +29,10 @@ class Admin::TuitionFeesController < AdminController
 
   def update
     # @tuition_fee = TuitionFee.find(params[:id])
+    @tf = params[:tuition_fee][:tuition_fees]
+    @mf = params[:tuition_fee][:misc_fees]
+    @of = params[:tuition_fee][:other_fees]
+    @tuition_fee.total_fees = (@tf.to_f + @mf.to_f + @of.to_f)
     if @tuition_fee.update(tuition_fee_params)
       redirect_to "/admin/tuition_fees", notice: 'Tuition Fee was successfully updated.'
     else
