@@ -1,0 +1,55 @@
+section#main-content
+  .row
+    .col-md-6
+      section.panel
+        .panel-body.profile-wrapper
+          .col-md-3
+            .profile-pic.text-center
+              = image_tag ('missing.png'), :class => "img-circle"
+          .col-md-9
+            .profile-info
+              h1 = current_user.full_name
+              span.text-muted = current_user.role_id
+              p
+                = current_user.description
+    .col-md-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Add User to Access This Page
+        .panel-body
+          | Coming Soon
+          
+  .row 
+    .col-md-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Update My Profile
+        .panel-body
+          = form_for(resource, :html => {:class => "form", method: :put}, :as => resource_name, :url => registration_path(resource_name)) do |f|
+            .form-group
+              label First Name
+              = f.text_field :first_name, :class=>"form-control required"
+            .form-group
+              label Middle Name
+              = f.text_field :middle_name, :class=>"form-control"
+            .form-group
+              label Last Name
+              = f.text_field :last_name, :class=>"form-control required"
+            .form-group
+              label Email
+              = f.email_field :email, autofocus: true, :class=>"form-control required"
+            - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+              p Currently waiting confirmation for: 
+                = resource.unconfirmed_email
+            .form-group
+              label Password
+              = f.password_field :password_confirmation, autocomplete: "off", :class=>"form-control"
+            .form-group
+              label Current Password
+              = f.password_field :current_password, autocomplete: "off", :class=>"form-control"
+            .form-group
+              = f.submit "Update", :class => "btn btn-primary"
+
+                
+
+                

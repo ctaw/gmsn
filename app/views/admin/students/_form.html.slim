@@ -30,15 +30,19 @@
           .form-group
             label.col-sm-3.control-label
             .col-sm-3
-              = f.text_field :balance, :class=>"form-control", :placeholder => "Balance"
+              = f.text_field :balance, :class=>"form-control", :placeholder => "Balance (Optional)"
             .col-sm-3
               =f.select(:payment_method, options_for_select(@payment_method,f.object.payment_method),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label
             .col-sm-3
-              = f.text_field :guardian_name, :class=>"form-control", :placeholder => "Guardian"
-            .col-sm-3
               = f.text_field :contact_number, :class=>"form-control", :placeholder => "Contact Number"
+            .col-sm-3
+              =f.select(:gender, options_for_select(@gender,f.object.gender),{},:class=>"form-control")
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-6
+              = f.text_field :guardian_name, :class=>"form-control", :placeholder => "Guardian Full Name"
           .form-group
             label.col-sm-3.control-label
             .col-sm-6

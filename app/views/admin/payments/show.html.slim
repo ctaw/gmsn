@@ -1,0 +1,59 @@
+.pageheader
+  h1 Payment
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li Payment
+      li.active Print
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-12
+      .panel.panel-default#divPrint
+        .panel-heading
+          h3.panel-title Payment Receipt
+        .panel-body
+          .col-md-12
+            .col-md-4
+              = image_tag ('logo.png'), :class => "img-circle"
+            .col-md-8
+              .row
+                label.col-md-4 Referrence Number
+                .col-md-8
+                  = @payment.referrence_number
+              br
+              .row
+                label.col-md-4 Student Number
+                .col-md-8
+                  = @student.student_number
+              .row
+                label.col-md-4 Student Name
+                .col-md-8
+                  = @student.full_name
+              .row
+                label.col-md-4 Year Level
+                .col-md-8
+                  = "Grade #{@student.year_level}"
+              .row
+                label.col-md-4 Amount Paid
+                .col-md-8
+                  = number_to_currency(@payment.amount_paid, :unit => "₱")
+              br
+              .row
+                label.col-md-4 Remaining Balance
+                .col-md-8
+                  = number_to_currency(@student.balance, :unit => "₱")
+            br
+            br
+              a.btn.btn-primary.pull-right href="#" onclick="PrintDiv()"  Print
+
+javascript:
+  function PrintDiv() {    
+   var divToPrint = document.getElementById('divPrint');
+   var popupWin = window.open('', '_blank', 'width=auto,height=auto');
+   popupWin.document.open();
+   popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
+    popupWin.document.close();
+  }
+
+

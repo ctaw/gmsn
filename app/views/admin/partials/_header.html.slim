@@ -18,20 +18,10 @@ header#header
         li
 
         li
-          a href="javascript:void(0);" 
+          a href="/edit" 
             span.icon
               i.fa.fa-user
             | My Account
-        li
-          a href="javascript:void(0);" 
-            span.icon
-              i.fa.fa-envelope
-            | Messages
-        li
-          a href="javascript:void(0);" 
-            span.icon
-              i.fa.fa-cog
-            | Settings
         li.divider
         li
           = link_to "<i class='fa fa-sign-out'></i> Logout".html_safe, destroy_user_session_path, method: :delete

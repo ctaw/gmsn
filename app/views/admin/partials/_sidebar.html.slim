@@ -11,20 +11,10 @@ aside.sidebar.sidebar-left
       small.title = current_user.role_id
       ul.dropdown-menu.animated.fadeInRight role="menu" 
         li
-          a href="javascript:void(0);" 
+          a href="/edit" 
             span.icon
               i.fa.fa-user
             | My Account
-        li
-          a href="javascript:void(0);" 
-            span.icon
-              i.fa.fa-envelope
-            | Messages
-        li
-          a href="javascript:void(0);" 
-            span.icon
-              i.fa.fa-cog
-            | Settings
         li.divider
         li
           = link_to "<i class='fa fa-sign-out'></i> Logout".html_safe, destroy_user_session_path, method: :delete
@@ -48,5 +38,13 @@ aside.sidebar.sidebar-left
       a href="/admin/payments/new"
         i.fa.fa-money
         | Payments
-
-  
+  h5.sidebar-header Account Settings
+  .setting-list
+    .row
+      .col-xs-8
+        a href="/edit"
+          label.control-label Edit Your Profile
+    .row
+      .col-xs-8
+        label 
+          = link_to "Log out", destroy_user_session_path, method: :delete, :class=>"control-label"

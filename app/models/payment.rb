@@ -17,12 +17,12 @@ class Payment < ActiveRecord::Base
 
     #if there's a discount
     discount = self.discount_amount
-    u_d_balance = ((student.balance - self.amount_paid) - discount)
 
-    if discount.nil?
-      student.update_attributes(:balance => u_balance.to_f)
-    else
+    if !discount.nil?
+      u_d_balance = ((student.balance - self.amount_paid) - discount)
       student.update_attributes(:balance => u_d_balance.to_f)
+    else
+      student.update_attributes(:balance => u_balance.to_f)
     end
   end
 

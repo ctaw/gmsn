@@ -34,5 +34,38 @@ section#main-content.animated.fadeInUp
               span.total.text-center = @users
               span.title.text-center 
                 = @users > 1 ? "Users" : "User"
-
+    .col-md-6
+      = image_tag ('logo.png'), :class => "img-circle img-logo"
     
+  .row
+    .col-md-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Today's Update
+        .panel-body
+          table.table.table-striped
+            thead
+              tr
+                th Student Number
+                th Balance
+            tbody
+              -if @todays_payments == []
+                tr
+                  td colspan="4" No records
+              -else
+               - @todays_payments.each do |s|
+                 tr
+                  td = s.student_number
+                  td = number_to_currency(s.amount_paid, :unit => "₱")
+    .col-md-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Grace Montessori School of Novaliches
+        .panel-body
+          .col-lg-6
+            label Mission
+            p We declare that our mission is to: provide training for skills and competencies that will enhance intellectual capacities; instill behavioral skills and affective competencies necessary to participate and contribute in community and nation-building; and create opportunities for resourcefulness, creative imagination and innovation.
+          .col-lg-6
+            label Vision
+            p Our school is committed to the formation of a community with a culture of Academic Excellence, Virtue and Creativity.
+            

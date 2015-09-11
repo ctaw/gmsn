@@ -61,6 +61,7 @@ class Admin::StudentsController < AdminController
     @year_level = [['Grade 1','1'],['Grade 2','2'],['Grade 3','3'],['Grade 4','4'],['Grade 5','5'],['Grade 6','6'],
                    ['Grade 7','7'],['Grade 8','8'],['Grade 9','9'],['Grade 10','10'],['Grade 11','11'],['Grade 12','12']]
     @payment_method = [['Full Payment','1'],['Annual','2'],['Semestrial','3'],['Quarterly','4'],['LDP','5']]
+    @gender = [['Male',1],['Female',2]]
   end
 
   def student_params

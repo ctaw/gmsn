@@ -17,13 +17,18 @@ class Admin::PaymentsController < AdminController
 
     if @payment.save
       if !@s_id.nil?
-        redirect_to "/admin/students/#{@s_id.id}"
+        redirect_to "/admin/payments/#{@payment.id}"
       else
-        redirect_to "/admin/dashboard"
+        redirect_to "/admin/students"
       end
     else
       render :new
     end
+  end
+
+  def show
+    @payment = Payment.find(params[:id])
+    @student = Student.where(:student_number => @payment.student_number).first
   end
 
   private
