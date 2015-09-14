@@ -1,0 +1,21 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title School Supplies
+      .panel-body
+        = form_for([:admin, @school_supply], :html => {:class => "form-horizontal form-border"}) do |f|
+          .form-group
+            label.col-sm-3.control-label Name
+            .col-sm-6
+              = f.text_field :name, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Amount
+            .col-sm-6
+              = f.text_field :amount, :class=>"form-control"
+          .row 
+            .col-md-12
+              hr
+              .btn-group.pull-right
+                a.btn.btn-default href="/admin/school_supplies" Cancel
+                = f.submit "Save", :class => "btn btn-success"

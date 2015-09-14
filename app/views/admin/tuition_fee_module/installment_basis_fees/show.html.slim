@@ -1,0 +1,49 @@
+.pageheader
+  h1 School Fees
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li School Fees
+      li.active Installment Basis Fee
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-6
+      .panel.panel-primary
+        .panel-heading
+          h3.panel-title = @installment_basis_fee.school_year.name
+        .panel-body
+          .row
+            label.col-md-4.main-title = @installment_basis_fee.year_level.name
+          br
+          .row
+            label.col-md-4.title Tuition Fee
+            .col-md-8.title = number_to_currency(@installment_basis_fee.tuition_fee, :unit => "₱")
+          .row
+            label.col-md-4.title DownPayment
+            .col-md-8.title = number_to_currency(@installment_basis_fee.down_payment, :unit => "₱")
+          - if !@installment_basis_fee.other_fee.nil?
+            .row
+              label.col-md-4.title Other Fee
+              .col-md-8.title = number_to_currency(@installment_basis_fee.other_fee, :unit => "₱")
+          .row
+              label.col-md-4.title Terms of Payment
+              .col-md-8.title = @installment_basis_fee.get_payment_terms
+          br
+          .row
+            label.col-md-4.title Due of Payments
+
+          .row
+            .col-md-12
+              table.table
+                - @installment_basis_fee.due_of_payments.each do |due|
+                  tr
+                    td  = due.due_date
+                    td = number_to_currency(due.amount, :unit => "₱") 
+                end
+          
+
+      .btn-group.pull-right aria-label="..." role="group" 
+        a.button.btn.btn-default href="/admin/tuition_fee_module" Back
+        a.button.btn.btn-primary href="/admin/tuition_fee_module/installment_basis_fees/#{@installment_basis_fee.id}/edit" Edit
+        a.button.btn.btn-add href="/admin/tuition_fee_module/installment_basis_fees/new" Add Installment Basis Fee

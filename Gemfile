@@ -30,6 +30,8 @@ gem "paperclip", "~> 4.3"
 gem 'rails_12factor', group: :production
 gem 'puma'
 gem 'will_paginate'
+gem 'cocoon'
+gem 'seed_dump'
 # ================= Added Gems =================
 
 # Use ActiveModel has_secure_password

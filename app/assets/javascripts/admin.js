@@ -6,3 +6,4 @@
 //= require_tree ./vendor/datepicker
 
 //= require_tree ./admin/init
+//= require_tree ./vendor/cocoon

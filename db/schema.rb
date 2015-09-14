@@ -16,13 +16,93 @@ ActiveRecord::Schema.define(version: 20150909131856) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "cash_basis_fees", force: :cascade do |t|
+    t.integer  "school_year_id"
+    t.integer  "year_level_id"
+    t.decimal  "tuition_fee"
+    t.decimal  "miscellaneous"
+    t.decimal  "other_fee"
+    t.decimal  "total_fee"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.string   "name"
+    t.decimal  "percentage"
+    t.text     "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "due_of_payments", force: :cascade do |t|
+    t.integer  "installment_basis_fee_id"
+    t.string   "due_date"
+    t.decimal  "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
+    t.integer  "role_id"
+    t.datetime "date_hired"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "installment_basis_fees", force: :cascade do |t|
+    t.integer  "school_year_id"
+    t.integer  "year_level_id"
+    t.integer  "payment_terms"
+    t.decimal  "tuition_fee"
+    t.decimal  "down_payment"
+    t.decimal  "other_fee"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "payments", force: :cascade do |t|
     t.integer  "student_number"
+    t.integer  "school_year"
     t.string   "referrence_number"
-    t.boolean  "discounted"
-    t.decimal  "discount_amount"
+    t.integer  "discount_id"
     t.decimal  "amount_paid"
     t.datetime "date_paid"
+    t.string   "received_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pe_uniforms", force: :cascade do |t|
+    t.string   "uniform_size"
+    t.decimal  "amount"
+    t.integer  "uniform_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "school_supplies", force: :cascade do |t|
+    t.string   "name"
+    t.decimal  "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "school_uniforms", force: :cascade do |t|
+    t.integer  "school_year_id"
+    t.integer  "level"
+    t.integer  "gender"
+    t.string   "uniform_size"
+    t.decimal  "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "school_years", force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -32,10 +112,9 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.string   "middle_name"
     t.string   "last_name"
     t.string   "student_number"
-    t.string   "school_year"
+    t.string   "school_year_id"
     t.integer  "payment_method"
-    t.integer  "year_level"
-    t.decimal  "balance"
+    t.integer  "year_level_id"
     t.integer  "tuition_fee_id"
     t.string   "guardian_name"
     t.integer  "contact_number"
@@ -46,13 +125,11 @@ ActiveRecord::Schema.define(version: 20150909131856) do
   end
 
   create_table "tuition_fees", force: :cascade do |t|
-    t.integer  "year_level"
-    t.decimal  "tuition_fees"
-    t.decimal  "misc_fees"
-    t.decimal  "other_fees"
-    t.decimal  "upon_enrollment"
-    t.integer  "payment_type"
-    t.decimal  "total_fees"
+    t.integer  "student_id"
+    t.string   "student_number"
+    t.integer  "cash_basis_fee_id"
+    t.integer  "installment_basis_fee_id"
+    t.decimal  "balance"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -83,5 +160,9 @@ ActiveRecord::Schema.define(version: 20150909131856) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "year_levels", force: :cascade do |t|
+    t.string "name"
+  end
 
 end

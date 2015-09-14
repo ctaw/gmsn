@@ -1,0 +1,24 @@
+.pageheader
+  h1 Employee
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li Employee
+      li.active Show
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-12
+      .panel.panel-default#divPrint
+        .panel-heading
+          h3.panel-title Employee Information
+        .panel-body
+          .row
+            label.col-lg-3 Name
+            .col-lg-6 = @employee.full_name
+          .row
+            label.col-lg-3 Position
+            .col-lg-6 = @employee.get_role
+          .row
+            label.col-lg-3 Date Hired
+            .col-lg-6 = format_date(@employee.date_hired)

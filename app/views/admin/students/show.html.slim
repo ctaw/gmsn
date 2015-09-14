@@ -20,7 +20,8 @@ section#main-content.animated.fadeInUp
           .row
             label.col-md-4 Yr. / Level
             .col-md-8
-              = "Grade #{@student.year_level}"
+              = @student.get_year_level
+              / = "Grade #{@student.year_level}"
           .row
             label.col-md-4 S.Y.
             .col-md-8

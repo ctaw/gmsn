@@ -1,5 +1,5 @@
 .pageheader
-  h1 GS Students
+  h1 Students
   .breadcrumb-wrapper.hidden-xs
     span.label You are here:
     ol.breadcrumb
@@ -35,7 +35,7 @@ section#main-content.animated.fadeInUp
                     td = s.last_name
                     td = s.first_name
                     td = s.student_number
-                    td = s.year_level
+                    td = s.year_level.name
                     td = number_to_currency(s.balance, :unit => "₱")
                     td style=('width: 2%;')
                       a href="students/#{s.id}"

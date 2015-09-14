@@ -1,0 +1,31 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title School Uniform
+      .panel-body
+        = form_for([:admin, @school_uniform], :html => {:class => "form-horizontal form-border"}) do |f|
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
+            .col-sm-3
+              =f.select(:level, options_for_select(@levels,f.object.level),{},:class=>"form-control")
+          .form-group
+            label.col-sm-3.control-label Gender
+            .col-sm-6
+              =f.select(:gender, options_for_select(@gender,f.object.gender),{},:class=>"form-control")
+          .form-group
+            label.col-sm-3.control-label Uniform Size
+            .col-sm-6
+              = f.text_field :uniform_size, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Amount
+            .col-sm-6
+              = f.text_field :amount, :class=>"form-control"
+          .row 
+            .col-md-12
+              hr
+              .btn-group.pull-right
+                a.btn.btn-default href="/admin/school_uniforms" Cancel
+                = f.submit "Save", :class => "btn btn-success"

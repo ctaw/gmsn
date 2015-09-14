@@ -24,15 +24,15 @@
           .form-group
             label.col-sm-3.control-label
             .col-sm-3
-              = f.text_field :school_year, :class=>"form-control", :placeholder => "School Year"
+              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
             .col-sm-3
-              =f.select(:year_level, options_for_select(@year_level,f.object.year_level),{},:class=>"form-control")
+              =f.select(:year_level_id, options_from_collection_for_select(@year_levels,"id","name", f.object.year_level_id),{},:class =>"form-control")
           .form-group
             label.col-sm-3.control-label
             .col-sm-3
-              = f.text_field :balance, :class=>"form-control", :placeholder => "Balance (Optional)"
+              input.form-control placeholder=("Balance (Optional)") type="text" id="balance" name="balance"
             .col-sm-3
-              =f.select(:payment_method, options_for_select(@payment_method,f.object.payment_method),{},:class=>"form-control")
+              =f.select(:payment_method, options_for_select(@payment_methods,f.object.payment_method),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label
             .col-sm-3

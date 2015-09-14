@@ -34,11 +34,12 @@ class Admin::PaymentsController < AdminController
   private
 
   def look_ups
+    discounts = Discount.order("id ASC")
     @discounted = [['No', false],['Yes',true]]
   end
 
   def payment_params
-    params.require(:payment).permit(:student_number, :referrence_number, :discounted, :discount_amount, :amount_paid, :date_paid)
+    params.require(:payment).permit(:student_number, :referrence_number, :discounted, :discount_amount, :discount_id, :amount_paid, :date_paid)
   end
 
 

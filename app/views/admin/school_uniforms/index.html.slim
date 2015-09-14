@@ -1,0 +1,48 @@
+.pageheader
+  h1 School Uniforms
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li.active School Uniforms
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-12
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Data Table
+          .actions.pull-right
+            a href="school_uniforms/new" 
+              i.fa.fa-plus
+        .panel-body
+          .table-responsive
+            table.table.table-bordered.table-striped
+              thead
+                tr
+                  th #
+                  th School Year
+                  th Year Level
+                  th Gender
+                  th Size
+                  th Amount
+                  th
+              tbody
+                -if @school_uniforms == []
+                  tr
+                    td colspan="7" No records
+                -else
+                 - @school_uniforms.each do |su|
+                   tr
+                    td = su.id
+                    td = su.school_year.name
+                    td = su.get_level
+                    td = su.get_gender
+                    td = su.uniform_size
+                    td = number_to_currency(su.amount, :unit => "₱")
+                    td
+                      .action-icon.pull-right
+                        a href="school_uniforms/#{su.id}"
+                          i.fa.fa-eye
+            .text-center         
+              =will_paginate @school_uniforms, :param_name=>"school_uniforms",:previous_label => '<i class="fa fa-chevron-left"></i>'.html_safe, :next_label => '<i class="fa fa-chevron-right"></i>'.html_safe
+

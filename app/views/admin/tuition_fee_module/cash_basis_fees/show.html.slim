@@ -1,0 +1,37 @@
+.pageheader
+  h1 School Fees
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li School Fees
+      li.active Cash Basis Fee
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-6
+      .panel.panel-primary
+        .panel-heading
+          h3.panel-title = @cash_basis_fee.school_year.name
+        .panel-body
+          .row
+            label.col-md-4.main-title = @cash_basis_fee.year_level.name
+          br
+          .row
+            label.col-md-4.title Tuition Fee
+            .col-md-8.title = number_to_currency(@cash_basis_fee.tuition_fee, :unit => "₱")
+          .row
+            label.col-md-4.title Miscellaneous
+            .col-md-8.title = number_to_currency(@cash_basis_fee.miscellaneous, :unit => "₱")
+          - if !@cash_basis_fee.other_fee.nil?
+            .row
+              label.col-md-4.title Other Fee
+              .col-md-8.title = number_to_currency(@cash_basis_fee.other_fee, :unit => "₱")
+          hr
+          .row
+            label.col-md-4.title Total Fee
+            .col-md-8.title = number_to_currency(@cash_basis_fee.total_fee, :unit => "₱")
+
+      .btn-group.pull-right aria-label="..." role="group" 
+        a.button.btn.btn-default href="/admin/tuition_fee_module" Back
+        a.button.btn.btn-primary href="/admin/tuition_fee_module/cash_basis_fees/#{@cash_basis_fee.id}/edit" Edit
+        a.button.btn.btn-add href="/admin/tuition_fee_module/cash_basis_fees/new" Add Cash Basis Fee

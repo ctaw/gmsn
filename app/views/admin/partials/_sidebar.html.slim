@@ -30,14 +30,43 @@ aside.sidebar.sidebar-left
       a href="/admin/students"
         i.fa.fa-users
         | Students
-    li class="#{params[:controller] == 'admin/tuition_fees' ? 'active' : ''}"
-      a href="/admin/tuition_fees"
-        i.fa.fa-file-o
-        | Tuition Fees
     li class="#{params[:controller] == 'admin/payments' ? 'active' : ''}"
       a href="/admin/payments/new"
         i.fa.fa-money
         | Payments
+    li class="#{params[:controller] == 'admin/employees' ? 'active' : ''}"
+      a href="/admin/employees"
+        i.fa.fa-users
+        | Employees
+  h5.sidebar-header Settings
+  ul.nav.nav-pills.nav-stacked
+    li class="#{(params[:controller] == 'admin/tuition_fee_module') || (params[:controller] == 'admin/tuition_fee_module/cash_basis_fees') || (params[:controller] == 'admin/tuition_fee_module/installment_basis_fees') ? 'active' : ''}"
+      a href="/admin/tuition_fee_module"
+        i.fa.fa-file-o
+        | School Fees
+    li class="#{params[:controller] == 'admin/discounts' ? 'active' : ''}"
+      a href="/admin/discounts"
+        i.fa.fa-money
+        | Discounts
+    li class="#{params[:controller] == 'admin/school_years' ? 'active' : ''}"
+      a href="/admin/school_years"
+        i.fa.fa-money
+        | School Years
+  h5.sidebar-header Other Fees
+  ul.nav.nav-pills.nav-stacked
+    li class="#{params[:controller] == 'admin/school_uniforms' ? 'active' : ''}"
+      a href="/admin/school_uniforms"
+        i.fa.fa-user
+        | School Uniforms
+        
+    li class="#{params[:controller] == 'admin/pe_uniforms' ? 'active' : ''}"
+      a href="/admin/pe_uniforms"
+        i.fa.fa-user
+        | PE Uniforms
+    li class="#{params[:controller] == 'admin/school_supplies' ? 'active' : ''}"
+      a href="/admin/school_supplies"
+        i.fa.fa-user
+        | School Supplies
   h5.sidebar-header Account Settings
   .setting-list
     .row

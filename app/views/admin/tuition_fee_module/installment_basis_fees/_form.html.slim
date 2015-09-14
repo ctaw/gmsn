@@ -1,0 +1,48 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Installment Bais Tuition Fee
+      .panel-body
+        = form_for([:admin, :tuition_fee_module, @installment_basis_fee], :html => {:class => "form-horizontal form-border"}) do |f|
+          .form-group
+            label.col-sm-3.control-label School Year
+            .col-sm-6
+              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
+          .form-group
+            label.col-sm-3.control-label Year Level
+            .col-sm-6
+              =f.select(:year_level_id, options_from_collection_for_select(@year_levels,"id","name", f.object.year_level_id),{},:class =>"form-control")
+          
+          .form-group
+            label.col-sm-3.control-label Terms
+            .col-sm-6
+              =f.select(:payment_terms, options_for_select(@payment_terms,f.object.payment_terms),{},:class=>"form-control")
+
+          .form-group
+            label.col-sm-3.control-label Tuition Fee
+            .col-sm-6
+              = f.text_field :tuition_fee, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label DownPayment
+            .col-sm-6
+              = f.text_field :down_payment, :class=>"form-control"
+
+          .form-group
+            label.col-sm-3.control-label Other Fees
+            .col-sm-6
+              = f.text_field :other_fee, :class=>"form-control"
+
+          #due-of-payments
+            label.col-sm-3.control-label Due of Payments
+            .col-sm-6
+              = f.fields_for :due_of_payments do |due|
+                = render 'due_of_payment_fields', :f => due
+              .links
+                = link_to_add_association "<i class='fa fa-plus'></i> Add Due of Payment".html_safe, f, :due_of_payments, :class => "btn btn-primary btn-sm"
+          .row 
+            .col-md-12
+              hr
+              .btn-group.pull-right
+                a.btn.btn-default href="/admin/tuition_fee_module" Cancel
+                = f.submit "Save", :class => "btn btn-success"

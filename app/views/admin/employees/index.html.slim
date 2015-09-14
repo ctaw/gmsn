@@ -1,0 +1,46 @@
+.pageheader
+  h1 Employees
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li.active Employees
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-12
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Data Table
+          .actions.pull-right
+            a href="employees/new" 
+              i.fa.fa-plus
+        .panel-body
+          .table-responsive
+            table.table.table-bordered.table-striped
+              thead
+                tr
+                  th Last Name
+                  th First Name
+                  th Middle Name
+                  th Position
+                  th Date Hired
+                  th
+              tbody
+                -if @employees == []
+                  tr
+                    td colspan="6" No records
+                -else
+                 - @employees.each do |e|
+                   tr
+                    td = e.last_name
+                    td = e.first_name
+                    td = e.middle_name
+                    td = e.get_role
+                    td = format_date(e.date_hired)
+                    td style=('width: 2%;')
+                      a href="employees/#{e.id}"
+                        i.fa.fa-eye
+
+
+              =will_paginate @employees, :param_name=>"employees",:previous_label => '<i class="fa fa-chevron-left"></i>'.html_safe, :next_label => '<i class="fa fa-chevron-right"></i>'.html_safe
+                   

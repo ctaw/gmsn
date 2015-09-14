@@ -7,7 +7,22 @@ Rails.application.routes.draw do
   namespace :admin do 
     resources :dashboard
     resources :students
-    resources :tuition_fees
+    resources :employees
+    resources :tuition_fee_module
     resources :payments
+
+    # CRUDS
+    resources :school_years
+    resources :year_levels
+    resources :discounts
+    resources :school_uniforms
+    resources :pe_uniforms
+    resources :school_supplies
+
+    namespace :tuition_fee_module do 
+      resources :cash_basis_fees
+      resources :installment_basis_fees
+    end
+    
   end
 end

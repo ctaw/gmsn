@@ -1,0 +1,23 @@
+.pageheader
+  h1 Discount
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li Discount
+      li.active Show
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-6
+      .panel.panel-default#divPrint
+        .panel-heading
+          h3.panel-title.main-title = @discount.name
+        .panel-body
+          .row
+            label.col-lg-3 Percentage
+            .col-lg-6 = "#{@discount.percentage} %"
+          .row
+            label.col-lg-3 Reason
+            .col-lg-6 = @discount.reason
+
+      a.btn.btn-primary.pull-right href="/admin/discounts/#{@discount.id}/edit" Edit

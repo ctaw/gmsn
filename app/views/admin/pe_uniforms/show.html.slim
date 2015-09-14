@@ -1,0 +1,26 @@
+.pageheader
+  h1 PE Uniforms
+  .breadcrumb-wrapper.hidden-xs
+    span.label You are here:
+    ol.breadcrumb
+      li Dashboard
+      li PE Uniforms
+      li.active Show
+section#main-content.animated.fadeInUp
+  .row
+    .col-md-6
+      .panel.panel-default#divPrint
+        .panel-heading
+          h3.panel-title = @pe_uniform.get_type
+        .panel-body
+          .row
+            label.col-lg-3.title Size
+            .col-lg-6.title = @pe_uniform.uniform_size
+          .row
+            label.col-lg-3.title Amount
+            .col-lg-6.title = number_to_currency(@pe_uniform.amount, :unit => "₱")
+
+      .btn-group.pull-right aria-label="..." role="group" 
+        a.button.btn.btn-default href="/admin/pe_uniforms" Back
+        a.btn.btn-primary href="/admin/pe_uniforms/#{@pe_uniform.id}/edit" Edit
+        a.button.btn.btn-add href="/admin/pe_uniforms/new" Add More

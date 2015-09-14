@@ -1,0 +1,33 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Cash Bais Tuition Fee
+      .panel-body
+        = form_for([:admin, :tuition_fee_module, @cash_basis_fee], :html => {:class => "form-horizontal form-border"}) do |f|
+          .form-group
+            label.col-sm-3.control-label School Year
+            .col-sm-6
+              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
+          .form-group
+            label.col-sm-3.control-label Year Level
+            .col-sm-6
+              =f.select(:year_level_id, options_from_collection_for_select(@year_levels,"id","name", f.object.year_level_id),{},:class =>"form-control")
+          .form-group
+            label.col-sm-3.control-label Tuition Fee
+            .col-sm-6
+              = f.text_field :tuition_fee, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Miscellaneous
+            .col-sm-6
+              = f.text_field :miscellaneous, :class=>"form-control"
+          .form-group
+            label.col-sm-3.control-label Other Fees
+            .col-sm-6
+              = f.text_field :other_fee, :class=>"form-control"
+          .row 
+            .col-md-12
+              hr
+              .btn-group.pull-right
+                a.btn.btn-default href="/admin/tuition_fee_module" Cancel
+                = f.submit "Save", :class => "btn btn-success"
