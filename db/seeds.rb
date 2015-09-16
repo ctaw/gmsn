@@ -1,6 +1,7 @@
-User.create!([
-  {email: "admin@gmsn.com", encrypted_password: "$2a$10$UxsNfj66IpRhgeJE3UNR2.yUqN8IgVkYLhGP3KHEe6miRJFBL9zlO", reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-09-14 13:28:18", last_sign_in_at: "2015-09-14 13:28:18", current_sign_in_ip: "::1", last_sign_in_ip: "::1", role_id: 0, first_name: "Guess", middle_name: nil, last_name: "Who", description: nil, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil}
-])
+if User.all.blank?
+  User.create(:email => 'admin@gmsn.com', :password => 'password', :password_confirmation => 'password', :first_name => 'Guess', :last_name => 'Who' ,:role_id => 0)
+end
+
 CashBasisFee.create!([
   {school_year_id: 1, year_level_id: 1, tuition_fee: "12500.0", miscellaneous: "5155.0", other_fee: nil, total_fee: "17655.0"},
   {school_year_id: 1, year_level_id: 2, tuition_fee: "13000.0", miscellaneous: "5555.0", other_fee: nil, total_fee: "18555.0"},

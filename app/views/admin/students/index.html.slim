@@ -23,7 +23,6 @@ section#main-content.animated.fadeInUp
                   th First Name
                   th Student No.
                   th Level
-                  th Balance
                   th
               tbody
                 -if @students == []
@@ -36,7 +35,6 @@ section#main-content.animated.fadeInUp
                     td = s.first_name
                     td = s.student_number
                     td = s.year_level.name
-                    td = number_to_currency(s.balance, :unit => "₱")
                     td style=('width: 2%;')
                       a href="students/#{s.id}"
                         i.fa.fa-eye

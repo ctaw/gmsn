@@ -4,6 +4,7 @@ class CreateTables < ActiveRecord::Migration
       t.string :first_name
       t.string :middle_name
       t.string :last_name
+      t.string :extension_name
       t.string :student_number
       t.string :school_year_id
       t.integer :payment_method # Cash or Installment
@@ -11,9 +12,11 @@ class CreateTables < ActiveRecord::Migration
       t.integer :tuition_fee_id
       # Personal Information
       t.string :guardian_name
+      t.string :guardian_relationship
       t.integer :contact_number
       t.text :present_address
       t.integer :gender
+      t.datetime :birth_date
       t.timestamps
     end
 
@@ -56,8 +59,11 @@ class CreateTables < ActiveRecord::Migration
 
     create_table :payments do |t|
       t.integer :student_number
-      t.integer :school_year # In payment of
+      t.integer :school_year_id # In payment of
+      t.integer :year_level_id # Level
       t.string :referrence_number
+      t.integer :pay_id # [School Uniform, PE Uniform, School Supplies or Tuition Fee]
+      t.string :description
       t.integer :discount_id # can be null
       t.decimal :amount_paid
       t.datetime :date_paid

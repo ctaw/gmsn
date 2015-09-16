@@ -15,8 +15,10 @@
               = f.text_field :middle_name, :class=>"form-control"
           .form-group
             label.col-sm-3.control-label Last Name
-            .col-sm-6
+            .col-sm-4
               = f.text_field :last_name, :class=>"form-control"
+            .col-sm-2
+               = f.text_field :extension_name, :class=>"form-control", :placeholder => "Extension"
           .form-group
             label.col-sm-3.control-label Student No.
             .col-sm-6
@@ -35,18 +37,24 @@
               =f.select(:payment_method, options_for_select(@payment_methods,f.object.payment_method),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label
-            .col-sm-3
+            .col-sm-6
               = f.text_field :contact_number, :class=>"form-control", :placeholder => "Contact Number"
-            .col-sm-3
-              =f.select(:gender, options_for_select(@gender,f.object.gender),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label
-            .col-sm-6
+            .col-sm-4
               = f.text_field :guardian_name, :class=>"form-control", :placeholder => "Guardian Full Name"
+            .col-sm-2
+              =f.select(:guardian_relationship, options_for_select(@relationships,f.object.guardian_relationship),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label
             .col-sm-6
               = f.text_field :present_address, :class=>"form-control", :placeholder => "Present Address"
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              =f.select(:gender, options_for_select(@gender,f.object.gender),{},:class=>"form-control")
+            .col-sm-3
+              = f.text_field :birth_date, :class=>"form-control date", :placeholder => "BirthDate"
           .row 
             .col-md-12
               hr

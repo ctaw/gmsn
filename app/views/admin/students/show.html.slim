@@ -14,30 +14,43 @@ section#main-content.animated.fadeInUp
           h3.panel-title = @student.full_name
         .panel-body
           .row
-            label.col-md-4 Student Number
-            .col-md-8
+            label.col-md-4.title Student Number
+            .col-md-8.title
               = @student.student_number
           .row
-            label.col-md-4 Yr. / Level
-            .col-md-8
-              = @student.get_year_level
-              / = "Grade #{@student.year_level}"
+            label.col-md-4.title Yr. / Level
+            .col-md-8.title
+              = @student.year_level.name
           .row
-            label.col-md-4 S.Y.
-            .col-md-8
-              = @student.school_year
+            label.col-md-4.title S.Y.
+            .col-md-8.title
+              = @student.school_year.name
           br
           .row
-            label.col-md-4 Guardian
-            .col-md-8
+            label.col-md-4.title Gender
+            .col-md-8.title
+              = @student.get_gender
+          .row
+            label.col-md-4.title Birth Date
+            .col-md-8.title
+              = format_date(@student.birth_date)
+
+          br
+          .row
+            label.col-md-4.title Guardian
+            .col-md-8.title
               = @student.guardian_name
           .row
-            label.col-md-4 Contact Number
-            .col-md-8
+            label.col-md-4.title Relationship
+            .col-md-8.title
+              = @student.get_relationship
+          .row
+            label.col-md-4.title Contact Number
+            .col-md-8.title
               = @student.contact_number
           .row
-            label.col-md-4 Address
-            .col-md-8
+            label.col-md-4.title Address
+            .col-md-8.title
               = @student.present_address
     
     .col-md-6
@@ -46,55 +59,51 @@ section#main-content.animated.fadeInUp
           h3.panel-title Tuition Fee Details
         .panel-body
           .row
-            label.col-md-4 Tuition Fees
-            .col-md-8
-              = number_to_currency(@tuition_fee.tuition_fees, :unit => "₱")
-          .row
-            label.col-md-4 Miscellaneous Fees
-            .col-md-8
-              = number_to_currency(@tuition_fee.misc_fees, :unit => "₱")
-          .row
-            label.col-md-4 Other Fees
-            .col-md-8
-              = number_to_currency(@tuition_fee.other_fees, :unit => "₱")
-          .row
-            label.col-md-4 Regular Scheme
-            .col-md-8
-              = @tuition_fee.get_payment_type
+            label.col-md-8 = @student.get_payment_method
           br
+          - if @student.payment_method == 1
+            .row
+              label.col-md-4 Tuition Fee
+              .col-md-8 = number_to_currency(@student_tuition.tuition_fee, :unit => "₱")
+            .row
+              label.col-md-4 Miscellaneous
+              .col-md-8 = number_to_currency(@student_tuition.miscellaneous, :unit => "₱")
+            - if !@student_tuition.other_fee.nil?
+              .row
+                label.col-md-4 Other Fee
+                .col-md-8 = number_to_currency(@student_tuition.other_fee, :unit => "₱")
+            hr
+            .row
+              label.col-md-4 Total Fee
+              .col-md-8 = number_to_currency(@student_tuition.total_fee, :unit => "₱")
+          - else
+            .row
+              label.col-md-4 Payment Terms
+              .col-md-8 = @student_tuition.get_payment_terms
+            .row
+              label.col-md-4 Tuition Fee
+              .col-md-8 = number_to_currency(@student_tuition.tuition_fee, :unit => "₱")
+            .row
+              label.col-md-4 DownPayment
+              .col-md-8 = number_to_currency(@student_tuition.down_payment, :unit => "₱")
+            - if !@student_tuition.other_fee.nil?
+              .row
+                label.col-md-4 Other Fee
+                .col-md-8 = number_to_currency(@student_tuition.other_fee, :unit => "₱")
+            br
+            .row
+              label.col-md-4 Due of Payments
+
+            .row
+              .col-md-12
+                table.table
+                  - @student_tuition.due_of_payments.each do |due|
+                    tr
+                      td  = due.due_date
+                      td = number_to_currency(due.amount, :unit => "₱") 
+                  end
           br
           .row
             label.col-md-4 Balance
-            .col-md-8
-              = number_to_currency(@student.balance, :unit => "₱")
-  .row
-    .col-md-12
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title Payment History
-        .panel-body
-          table.table.table-striped
-            thead
-              tr
-                th #
-                th Date Paid
-                th Amount Paid
-                th Ref. Number
-                th Discount
-            tbody
-              -if @payments == []
-                tr
-                  td colspan="5" No records
-              -else
-                - @payments.each do |p|
-                  tr
-                    td = p.id
-                    td = format_date(p.date_paid)
-                    td = number_to_currency(p.amount_paid, :unit => "₱")
-                    td = p.referrence_number
-                    td
-                      -if p.discount_amount.nil? 
-                        = "0"
-                      -else
-                        = number_to_currency(p.discount_amount, :unit => "₱")
-                      
+            .col-md-8 = number_to_currency(@tuition_fee.balance, :unit => "₱")
+          

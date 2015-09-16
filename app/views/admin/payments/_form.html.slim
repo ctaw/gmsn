@@ -6,23 +6,25 @@
       .panel-body
         = form_for([:admin, @payment], :html => {:class => "form-horizontal form-border"}) do |f|
           .form-group
-            label.col-sm-3.control-label Referrence_number
-            .col-sm-6
-              = f.text_field :referrence_number, :class=>"form-control", :disabled => "disabled"
-          .form-group
             label.col-sm-3.control-label Student Number
             .col-sm-6
               = f.text_field :student_number, :class=>"form-control"
           .form-group
-            label.col-sm-3.control-label
+            label.col-sm-3.control-label In Payment of
             .col-sm-3
-              =f.select(:discounted, options_for_select(@discounted,f.object.discounted),{},:class=>"form-control")
+              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
             .col-sm-3
-              = f.text_field :discount_amount, :class=>"form-control", :placeholder => "Discounted Amount"
-          / .form-group
-          /   label.col-sm-3.control-label Discount Reason
-          /   .col-sm-6
-          /     = f.select(:discount_id, options_for_select(@discounts,f.object.discount_id),{},:class=>"form-control")
+              =f.select(:year_level_id, options_from_collection_for_select(@year_levels,"id","name", f.object.year_level_id),{},:class =>"form-control")
+          .form-group
+            label.col-sm-3.control-label What to pay?
+            .col-sm-3
+              =f.select(:pay_id, options_for_select(@pays,f.object.pay_id),{},:class=>"form-control")
+            .col-sm-3
+              = f.text_field :description, :class=>"form-control", :placeholder => "Description"
+          .form-group
+            label.col-sm-3.control-label With Discount?
+            .col-sm-6
+              =f.select(:discount_id, options_from_collection_for_select(@discounts,"id","get_discount", f.object.discount_id),{:include_blank => 'Select Discount (Optional)'},:class =>"form-control")
           .form-group
             label.col-sm-3.control-label Amount Paid
             .col-sm-6
@@ -31,6 +33,10 @@
             label.col-sm-3.control-label Date Paid
             .col-sm-6
               = f.text_field :date_paid, :class=>"form-control date "
+          .form-group
+            label.col-sm-3.control-label Received By
+            .col-sm-6
+              = f.text_field :received_by, :class=>"form-control"
           .row 
             .col-md-12
               hr

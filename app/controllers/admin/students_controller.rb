@@ -13,21 +13,51 @@ class Admin::StudentsController < AdminController
 
   def create
     @student = Student.new(student_params)
+    sy = params[:student][:school_year_id]
+    yl = params[:student][:year_level_id]
     payment_method = params[:student][:payment_method]
-    @balance = params[:balance]
-    puts ">>>>>>>>>"
-    puts @balance
-    puts ">>>>>>>>>"
-    # if @student.save
-    #   redirect_to "/admin/students"
-    # else
-    #   render :new
-    # end
+    @cbf = ""
+    @ibf = ""
+    @balance = ""
+
+    # Getting TF
+    if payment_method == "1"
+      cash = CashBasisFee.where(:school_year_id => sy).where(:year_level_id => yl).first
+      @student.tuition_fee_id = cash.id
+      @cbf = cash.id
+
+      if params[:balance] == ""
+        @balance = cash.total_fee
+      end
+    else
+      installment = InstallmentBasisFee.where(:school_year_id => sy).where(:year_level_id => yl).first
+      @student.tuition_fee_id = installment.id
+      @ibf = installment.id
+      if params[:balance] == ""
+        @balance = installment.tuition_fee
+      end
+    end
+
+    if @student.save
+      @tuition = TuitionFee.new({:student_id => @student.id, :student_number => @student.student_number, :cash_basis_fee_id => @cbf, :installment_basis_fee_id => @ibf, :balance => @balance})
+      @tuition.save
+      redirect_to "/admin/students"
+    else
+      render :new
+    end
+
   end
 
   def show
-    @tuition_fee = TuitionFee.where(:year_level => @student.year_level).first
-    @payments = Payment.select("id, date_paid, amount_paid, referrence_number, discount_amount").where(:student_number => @student.student_number).order("date_paid DESC")
+
+    @tuition_fee = TuitionFee.where(:student_id => @student.id).where(:student_number => @student.student_number).first
+    
+    if !@tuition_fee.cash_basis_fee_id.nil?
+      @student_tuition = CashBasisFee.find(@tuition_fee.cash_basis_fee_id)
+    else
+      @student_tuition = InstallmentBasisFee.find(@tuition_fee.installment_basis_fee_id)
+    end
+    #@payments = Payment.select("id, date_paid, amount_paid, referrence_number, discount_amount").where(:student_number => @student.student_number).order("date_paid DESC")
   end
 
   def edit
@@ -52,12 +82,13 @@ class Admin::StudentsController < AdminController
     @year_levels = YearLevel.select("id, name").order("id ASC")
     @payment_methods = [['Cash Basis',1],['Installment Basis',2]]
     @gender = [['Male',1],['Female',2]]
+    @relationships = [['Father',1],['Mother',2],['Sister',3],['Brother',4],['Relative',5]]
   end
 
   def student_params
-    params.require(:student).permit(:first_name, :middle_name, :last_name, :student_number, 
+    params.require(:student).permit(:first_name, :middle_name, :last_name, :extension_name, :student_number, 
       :school_year_id, :payment_method, :year_level_id, :balance, :tuition_fee_id, 
-      :guardian_name, :contact_number, :present_address, :gender)
+      :guardian_name, :guardian_relationship, :contact_number, :present_address, :gender, :birth_date)
   end
 
 end

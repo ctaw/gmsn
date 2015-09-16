@@ -12,18 +12,41 @@ class Admin::PaymentsController < AdminController
   def create
     @payment = Payment.new(payment_params)
     @payment.generate_referrence_number
-    @sn = params[:payment][:student_number]
-    @s_id = Student.where(:student_number => @sn).first
+
+    sn = params[:payment][:student_number]
+    pay_id = params[:payment][:pay_id]
+    @discount_id = params[:payment][:discount_id]
+
+    student = Student.where(:student_number => sn).first
+    @balance = ""
+
+    if pay_id = 1      
+      
+      @tution = TuitionFee.where(:student_id => student.id).where(:student_number => student.student_number).first
+      
+      if !@tution.cash_basis_fee_id.nil?
+        @tf = CashBasisFee.find(@tution.cash_basis_fee_id)
+        @tuition_fee_amount = @tf.total_fee
+      else
+        @tf = InstallmentBasisFee.find(@tution.installment_basis_fee_id)
+        @tuition_fee_amount = @tf.tuition_fee
+      end
+
+    end
 
     if @payment.save
-      if !@s_id.nil?
-        redirect_to "/admin/payments/#{@payment.id}"
-      else
-        redirect_to "/admin/students"
+
+      if !@discount_id.nil?
+        discount = Discount.find(@discount_id)
+        discount_percent = discount.percentage 
+        @balance = (@tuition_fee_amount.to_f - @payment.amount_paid.to_f)
       end
+        @tuition.update_attributes(:balance => @balance)
+        redirect_to "/admin/dashboard"
     else
       render :new
     end
+
   end
 
   def show
@@ -34,12 +57,15 @@ class Admin::PaymentsController < AdminController
   private
 
   def look_ups
-    discounts = Discount.order("id ASC")
-    @discounted = [['No', false],['Yes',true]]
+    @school_years = SchoolYear.select("id, name").order("id DESC")
+    @year_levels = YearLevel.select("id, name").order("id ASC")
+    @pays = [['Tuition Fees',1],['School Uniforms',2],['P.E Uniforms', 3],['School Supplies',4]]
+    @discounts = Discount.select("id, name, percentage, reason").order("id ASC")
   end
 
   def payment_params
-    params.require(:payment).permit(:student_number, :referrence_number, :discounted, :discount_amount, :discount_id, :amount_paid, :date_paid)
+    params.require(:payment).permit(:student_number, :school_year_id, :year_level_id, :referrence_number,
+          :pay_id, :description, :discount_id, :amount_paid, :date_paid, :received_by)
   end
 
 
