@@ -58,7 +58,7 @@ class CreateTables < ActiveRecord::Migration
     end
 
     create_table :payments do |t|
-      t.integer :student_number
+      t.string :student_number
       t.integer :school_year_id # In payment of
       t.integer :year_level_id # Level
       t.string :referrence_number

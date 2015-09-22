@@ -106,4 +106,29 @@ section#main-content.animated.fadeInUp
           .row
             label.col-md-4 Balance
             .col-md-8 = number_to_currency(@tuition_fee.balance, :unit => "₱")
-          
+  .row
+    .col-md-12
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Payment History
+        .panel-body
+          table.table.table-striped
+            thead
+              tr
+                th Date Paid
+                th Amount Paid
+                th Ref. #
+            tbody
+              -if @payments == []
+                tr
+                  td colspan="5" No records
+              -else
+                - @payments.each do |p|
+                  tr
+                    td = format_date(p.date_paid)
+                    td = number_to_currency(p.amount_paid, :unit => "₱")
+                    td = p.referrence_number
+          .text-center
+              =will_paginate @payments, :param_name=>"payments",:previous_label => '<i class="fa fa-chevron-left"></i>'.html_safe, :next_label => '<i class="fa fa-chevron-right"></i>'.html_safe
+
+            

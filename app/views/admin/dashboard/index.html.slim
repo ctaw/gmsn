@@ -13,8 +13,8 @@ section#main-content.animated.fadeInUp
           .panel.panel-solid-success.widget-mini
             .panel-body
               i.icon-bar-chart
-              span.total.text-center = number_to_currency(@total_cash, :unit => "₱")
-              span.title.text-center On Hand Cash
+              span.total.text-center = number_to_currency(@tuition_cash, :unit => "₱")
+              span.title.text-center On Hand Cash ( TF )
         .col-md-6
           .panel.widget-mini
             .panel-body
@@ -25,15 +25,15 @@ section#main-content.animated.fadeInUp
           .panel.widget-mini
             .panel-body
               i.icon-envelope-open
-              span.total.text-center = @employees
-              span.title.text-center = @employees > 1 ? "Employees" : "Employee"
+              span.total.text-center = number_to_currency(@other_cash, :unit => "₱")
+              span.title.text-center Other Cash
         .col-md-6
           .panel.panel-solid-info.widget-mini
             .panel-body
               i.icon-user
-              span.total.text-center = @users
-              span.title.text-center 
-                = @users > 1 ? "Users" : "User"
+              span.total.text-center = number_to_currency(@total_cash, :unit => "₱")
+              span.title.text-center Total Cash
+                
     .col-md-6
       = image_tag ('logo.png'), :class => "img-circle img-logo"
     
@@ -57,6 +57,9 @@ section#main-content.animated.fadeInUp
                  tr
                   td = s.student_number
                   td = number_to_currency(s.amount_paid, :unit => "₱")
+          .text-center
+              =will_paginate @todays_payments, :param_name=>"todays_payments",:previous_label => '<i class="fa fa-chevron-left"></i>'.html_safe, :next_label => '<i class="fa fa-chevron-right"></i>'.html_safe
+
     .col-md-6
       .panel.panel-default
         .panel-heading

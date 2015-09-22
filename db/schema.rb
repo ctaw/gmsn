@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20150909131856) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.integer  "student_number"
+    t.string   "student_number"
     t.integer  "school_year_id"
     t.integer  "year_level_id"
     t.string   "referrence_number"
