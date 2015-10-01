@@ -16,6 +16,7 @@ class Admin::DashboardController < AdminController
     @employees = User.where("role_id !=?", 0).count
 
     @todays_payments = Payment.select("id, student_number, amount_paid").where(date_paid: Date.today).order('id DESC').paginate(:page => params[:todays_payments], :per_page => 5)
+
   end
 
 end

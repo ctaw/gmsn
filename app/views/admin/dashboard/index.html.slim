@@ -9,34 +9,53 @@ section#main-content.animated.fadeInUp
   .row
     .col-md-12.col-lg-6
       .row
-        .col-md-6
-          .panel.panel-solid-success.widget-mini
-            .panel-body
-              i.icon-bar-chart
-              span.total.text-center = number_to_currency(@tuition_cash, :unit => "₱")
-              span.title.text-center On Hand Cash ( TF )
-        .col-md-6
-          .panel.widget-mini
-            .panel-body
-              i.icon-support
-              span.total.text-center = @students
-              span.title.text-center = @students > 1 ? "Students" : "Student"
-        .col-md-6
-          .panel.widget-mini
-            .panel-body
-              i.icon-envelope-open
-              span.total.text-center = number_to_currency(@other_cash, :unit => "₱")
-              span.title.text-center Other Cash
-        .col-md-6
-          .panel.panel-solid-info.widget-mini
-            .panel-body
-              i.icon-user
-              span.total.text-center = number_to_currency(@total_cash, :unit => "₱")
-              span.title.text-center Total Cash
+        - if current_user.role_id == "admin"
+          .col-md-6
+            .panel.panel-solid-success.widget-mini
+              .panel-body
+                i.icon-bar-chart
+                span.total.text-center = number_to_currency(@tuition_cash, :unit => "₱")
+                span.title.text-center On Hand Cash ( TF )
+        - else
+          .col-md-6
+            .panel.panel-solid-success.widget-mini
+              .panel-body
+                i.icon-bar-chart
+                span.total.text-center = @students
+                span.title.text-center = @students > 1 ? "Students" : "Student"
+        - if current_user.role_id == "admin"
+          .col-md-6
+            .panel.widget-mini
+              .panel-body
+                i.icon-support
+                span.total.text-center = @students
+                span.title.text-center = @students > 1 ? "Students" : "Student"
+        - else
+          .col-md-6
+            .panel.widget-mini
+              .panel-body
+                i.icon-support
+                span.total.text-center = @employees
+                span.title.text-center = @students > 1 ? "Employee" : "Employees"
+        - if current_user.role_id == "admin"
+          .col-md-6
+            .panel.widget-mini
+              .panel-body
+                i.icon-envelope-open
+                span.total.text-center = number_to_currency(@other_cash, :unit => "₱")
+                span.title.text-center Other Cash
+        - if current_user.role_id == "admin"
+          .col-md-6
+            .panel.panel-solid-info.widget-mini
+              .panel-body
+                i.icon-user
+                span.total.text-center = number_to_currency(@total_cash, :unit => "₱")
+                span.title.text-center Total Cash
                 
     .col-md-6
       = image_tag ('logo.png'), :class => "img-circle img-logo"
-    
+  
+  br
   .row
     .col-md-6
       .panel.panel-default

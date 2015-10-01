@@ -1,0 +1,75 @@
+aside.sidebar.sidebar-left
+  .sidebar-profile
+    .avatar
+      = image_tag ('missing.png'), :class => 'img-circle profile-image'
+      i.on.border-dark.animated.bounceIn
+    .profile-body.dropdown
+      a.dropdown-toggle aria-expanded="false" data-toggle="dropdown" href="javascript:void(0);" /
+      h4
+        = current_user.full_name
+        span.caret
+      small.title = current_user.role_id
+      ul.dropdown-menu.animated.fadeInRight role="menu" 
+        li
+          a href="/edit" 
+            span.icon
+              i.fa.fa-user
+            | My Account
+        li.divider
+        li
+          = link_to "<i class='fa fa-sign-out'></i> Logout".html_safe, destroy_user_session_path, method: :delete
+            
+  nav
+  h5.sidebar-header Navigation
+  ul.nav.nav-pills.nav-stacked
+    li class="#{params[:controller] == 'admin/dashboard' ? 'active' : ''}"
+      a href="/admin/dashboard" title="Dashboard" 
+        i.fa.fa-fw.fa-tachometer
+        | Dashboard
+    li class="#{params[:controller] == 'admin/students' ? 'active' : ''}"
+      a href="/admin/students"
+        i.fa.fa-users
+        | Students
+    li class="#{params[:controller] == 'admin/payments' ? 'active' : ''}"
+      a href="/admin/payments/new"
+        i.fa.fa-money
+        | Payments
+  h5.sidebar-header Settings
+  ul.nav.nav-pills.nav-stacked
+    li class="#{(params[:controller] == 'admin/tuition_fee_module') || (params[:controller] == 'admin/tuition_fee_module/cash_basis_fees') || (params[:controller] == 'admin/tuition_fee_module/installment_basis_fees') ? 'active' : ''}"
+      a href="/admin/tuition_fee_module"
+        i.fa.fa-file-o
+        | School Fees
+    li class="#{params[:controller] == 'admin/discounts' ? 'active' : ''}"
+      a href="/admin/discounts"
+        i.fa.fa-money
+        | Discounts
+    li class="#{params[:controller] == 'admin/school_years' ? 'active' : ''}"
+      a href="/admin/school_years"
+        i.fa.fa-money
+        | School Years
+  h5.sidebar-header Other Fees
+  ul.nav.nav-pills.nav-stacked
+    li class="#{params[:controller] == 'admin/school_uniforms' ? 'active' : ''}"
+      a href="/admin/school_uniforms"
+        i.fa.fa-user
+        | School Uniforms
+        
+    li class="#{params[:controller] == 'admin/pe_uniforms' ? 'active' : ''}"
+      a href="/admin/pe_uniforms"
+        i.fa.fa-user
+        | PE Uniforms
+    li class="#{params[:controller] == 'admin/school_supplies' ? 'active' : ''}"
+      a href="/admin/school_supplies"
+        i.fa.fa-user
+        | School Supplies
+  h5.sidebar-header Account Settings
+  .setting-list
+    .row
+      .col-xs-8
+        a href="/edit"
+          label.control-label Edit Your Profile
+    .row
+      .col-xs-8
+        label 
+          = link_to "Log out", destroy_user_session_path, method: :delete, :class=>"control-label"

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   scope :basic_details, -> { select(:email, :first_name, :last_name, :id, :role_id, :created_at) }
   scope :exclude_self, -> (value) { where(id: value) }
 
-  enum role_id: [:admin, :accounting, :employee]
+  enum role_id: [:admin, :assistant_admin, :accounting]
 
   has_attached_file :photo, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/missing.png"
   validates_attachment_content_type :photo, content_type: /\Aimage\/.*\Z/

@@ -23,6 +23,6 @@ Rails.application.routes.draw do
       resources :cash_basis_fees
       resources :installment_basis_fees
     end
-    
   end
+  
 end

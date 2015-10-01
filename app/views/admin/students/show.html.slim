@@ -52,7 +52,14 @@ section#main-content.animated.fadeInUp
             label.col-md-4.title Address
             .col-md-8.title
               = @student.present_address
+          .row
+            label.col-md-9.title
+            .col-md-3.title
+              .btn-group.pull-right aria-label="..." role="group" 
+                a.button.btn.btn-default.btn-sm href="/admin/students" Back
+                a.btn.btn-primary.btn-sm href="/admin/students/#{@student.id}/edit" Update
     
+    br
     .col-md-6
       .panel.panel-solid-default
         .panel-heading
