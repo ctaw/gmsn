@@ -13,7 +13,7 @@ class CreateTables < ActiveRecord::Migration
       # Personal Information
       t.string :guardian_name
       t.string :guardian_relationship
-      t.integer :contact_number
+      t.integer :contact_number, :limit => 8
       t.text :present_address
       t.integer :gender
       t.datetime :birth_date
@@ -66,6 +66,7 @@ class CreateTables < ActiveRecord::Migration
       t.string :description
       t.integer :discount_id # can be null
       t.decimal :amount_paid
+      t.decimal :penalty, :default => 0.0
       t.datetime :date_paid
       t.string :received_by
       t.timestamps

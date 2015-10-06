@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.string   "description"
     t.integer  "discount_id"
     t.decimal  "amount_paid"
+    t.decimal  "penalty",           default: 0.0
     t.datetime "date_paid"
     t.string   "received_by"
     t.datetime "created_at"
@@ -122,7 +123,7 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.integer  "tuition_fee_id"
     t.string   "guardian_name"
     t.string   "guardian_relationship"
-    t.integer  "contact_number"
+    t.integer  "contact_number",        limit: 8
     t.text     "present_address"
     t.integer  "gender"
     t.datetime "birth_date"

@@ -58,13 +58,18 @@ class Admin::StudentsController < AdminController
       @student_tuition = InstallmentBasisFee.find(@tuition_fee.installment_basis_fee_id)
     end
     
-    @payments = Payment.select("date_paid, amount_paid, referrence_number").where(:student_number => @student.student_number).order("date_paid DESC").paginate(:page => params[:payments], :per_page => 5)
+    @payments = Payment.select("date_paid, amount_paid, discount_id").where(:student_number => @student.student_number).order("date_paid DESC").paginate(:page => params[:payments], :per_page => 5)
   end
 
   def edit
   end
 
   def update
+    if @student.update(student_params)
+      redirect_to "/admin/students"
+    else
+      render :edit
+    end
   end
 
   def destroy

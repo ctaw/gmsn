@@ -40,26 +40,42 @@ class Admin::PaymentsController < AdminController
     # ======== SAVING PAYMENTS ========
     if @payment.save
       
-      @updated_tuition = TuitionFee.find(@tution.id)
+      # if Student is Exist
+      if TuitionFee.exists?(:student_number => @payment.student_number)
+        
+        # Check If there's a discount
+        if @payment.discount_id.nil?
 
-      # ====== Check for discount and new payee
-      if !@updated_tuition.id.present?
-      
-        if !@payment.discount_id.nil?
+          puts ">>>>>>>>>>>>>>>>"
+          puts "walang discount"
+
+          # Update Existing Balance
+          
+          @updated_tuition = TuitionFee.find(@tution.id)
+          
+          if !@updated_tuition.balance.nil?
+            @balance = (@updated_tuition.balance.to_f - @payment.amount_paid.to_f) - @payment.penalty.to_f
+          else
+            @balance = (@tuition_fee_amount.to_f - @payment.amount_paid.to_f) - @payment.penalty.to_f
+          end
+          
+        else
+          
+          puts ">>>>>>>>>>>>>>>>"
+          puts "may discount"
+
           # Get Discount Percentage
           @dis = Discount.find(@payment.discount_id)
           @dis_percent = @dis.percentage.to_f
 
           @tol_discount = (@tuition_fee_amount.to_f * @dis_percent) / 100
-          @balance = (@tol_discount.to_f - @payment.amount_paid.to_f)
-        else
-          @balance = (@tuition_fee_amount.to_f - @payment.amount_paid.to_f)
+          puts ">>>>>>>>>>>>>"
+          @balance = ((@tuition_fee_amount.to_f - @tol_discount.to_f) - @payment.amount_paid.to_f) - @payment.penalty.to_f
         end
 
       else
-        @balance = (@updated_tuition.balance.to_f - @payment.amount_paid.to_f)
+        redirect_to "/admin/students/new"
       end
-      # ====== Check for discount and new payee
 
       # After Saved
       @updated_tuition = TuitionFee.find(@tution.id)
@@ -89,7 +105,7 @@ class Admin::PaymentsController < AdminController
 
   def payment_params
     params.require(:payment).permit(:student_number, :school_year_id, :year_level_id, :referrence_number,
-          :pay_id, :description, :discount_id, :amount_paid, :date_paid, :received_by)
+          :pay_id, :description, :discount_id, :amount_paid, :penalty, :date_paid, :received_by)
   end
 
 

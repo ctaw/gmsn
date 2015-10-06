@@ -124,7 +124,7 @@ section#main-content.animated.fadeInUp
               tr
                 th Date Paid
                 th Amount Paid
-                th Ref. #
+                th Discount?
             tbody
               -if @payments == []
                 tr
@@ -134,7 +134,10 @@ section#main-content.animated.fadeInUp
                   tr
                     td = format_date(p.date_paid)
                     td = number_to_currency(p.amount_paid, :unit => "₱")
-                    td = p.referrence_number
+                    - if !p.discount_id.nil?
+                      td = p.discount.name + " - " + p.discount.get_percentage
+                    - else
+                      td none
           .text-center
               =will_paginate @payments, :param_name=>"payments",:previous_label => '<i class="fa fa-chevron-left"></i>'.html_safe, :next_label => '<i class="fa fa-chevron-right"></i>'.html_safe
 
