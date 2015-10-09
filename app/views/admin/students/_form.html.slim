@@ -21,8 +21,10 @@
                = f.text_field :extension_name, :class=>"form-control", :placeholder => "Extension"
           .form-group
             label.col-sm-3.control-label Student No.
-            .col-sm-6
+            .col-sm-3
               = f.text_field :student_number, :class=>"form-control"
+            .col-sm-3
+              =f.select(:status, options_for_select(@statuses,f.object.status),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label
             .col-sm-3
@@ -35,10 +37,19 @@
               input.form-control placeholder=("Balance (Optional)") type="text" id="balance" name="balance"
             .col-sm-3
               =f.select(:payment_method, options_for_select(@payment_methods,f.object.payment_method),{},:class=>"form-control")
+          #payment-terms
+            .form-group
+              label.col-sm-3.control-label Terms of Payment
+              .col-sm-6
+                =f.select(:due_of_payment_id, options_for_select(@due_of_payments,f.object.due_of_payment_id),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label
-            .col-sm-6
-              = f.text_field :contact_number, :class=>"form-control", :placeholder => "Contact Number"
+            .col-sm-2
+              = f.text_field :contact_number1, :class=>"form-control", :placeholder => "Contact Number 1"
+            .col-sm-2
+              = f.text_field :contact_number2, :class=>"form-control", :placeholder => "Contact Number 2"
+            .col-sm-2
+              = f.text_field :contact_number3, :class=>"form-control", :placeholder => "Contact Number 3"
           .form-group
             label.col-sm-3.control-label
             .col-sm-4
@@ -61,3 +72,14 @@
               .btn-group.pull-right
                 a.btn.btn-default href="/admin/students" Cancel
                 = f.submit "Save", :class => "btn btn-success"
+
+javascript:
+  $('#payment-terms').hide();
+  $("#student_payment_method").change(function(){
+      var x = $('#student_payment_method').val();
+      if(x == 2){
+        $('#payment-terms').show();
+      } else {
+        $('#payment-terms').hide();
+      }
+  });

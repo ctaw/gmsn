@@ -41,4 +41,13 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def is_active
+    case self.status
+    when 1
+      "Active"
+    when 2
+      "InActive"
+    end
+  end
+
 end

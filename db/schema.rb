@@ -68,6 +68,8 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.string   "student_number"
     t.integer  "school_year_id"
     t.integer  "year_level_id"
+    t.integer  "payment_mode"
+    t.integer  "payment_terms"
     t.string   "referrence_number"
     t.integer  "pay_id"
     t.string   "description"
@@ -121,12 +123,16 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.integer  "payment_method"
     t.integer  "year_level_id"
     t.integer  "tuition_fee_id"
+    t.integer  "due_of_payment_id"
     t.string   "guardian_name"
     t.string   "guardian_relationship"
-    t.integer  "contact_number",        limit: 8
+    t.integer  "contact_number1",       limit: 8
+    t.integer  "contact_number2",       limit: 8
+    t.integer  "contact_number3",       limit: 8
     t.text     "present_address"
     t.integer  "gender"
     t.datetime "birth_date"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

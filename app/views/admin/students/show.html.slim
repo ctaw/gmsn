@@ -44,14 +44,26 @@ section#main-content.animated.fadeInUp
             label.col-md-4.title Relationship
             .col-md-8.title
               = @student.get_relationship
+          br
           .row
-            label.col-md-4.title Contact Number
+            label.col-md-4.title Contact Numbers
+
             .col-md-8.title
-              = @student.contact_number
+              = @student.contact_number1 
+              br
+              = @student.contact_number2
+              br
+              = @student.contact_number3
+          br
           .row
             label.col-md-4.title Address
             .col-md-8.title
               = @student.present_address
+          br
+          .row
+            label.col-md-4.title Status
+            .col-md-8.title
+              = @student.is_active
           .row
             label.col-md-9.title
             .col-md-3.title

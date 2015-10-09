@@ -10,13 +10,17 @@ class CreateTables < ActiveRecord::Migration
       t.integer :payment_method # Cash or Installment
       t.integer :year_level_id
       t.integer :tuition_fee_id
+      t.integer :due_of_payment_id
       # Personal Information
       t.string :guardian_name
       t.string :guardian_relationship
-      t.integer :contact_number, :limit => 8
+      t.integer :contact_number1, :limit => 8
+      t.integer :contact_number2, :limit => 8
+      t.integer :contact_number3, :limit => 8
       t.text :present_address
       t.integer :gender
       t.datetime :birth_date
+      t.integer :status
       t.timestamps
     end
 
@@ -61,6 +65,8 @@ class CreateTables < ActiveRecord::Migration
       t.string :student_number
       t.integer :school_year_id # In payment of
       t.integer :year_level_id # Level
+      t.integer :payment_mode # Cash or Installment
+      t.integer :payment_terms # Monthly Semi A.
       t.string :referrence_number
       t.integer :pay_id # [School Uniform, PE Uniform, School Supplies or Tuition Fee]
       t.string :description

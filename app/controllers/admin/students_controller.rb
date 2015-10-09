@@ -89,12 +89,14 @@ class Admin::StudentsController < AdminController
     @payment_methods = [['Cash Basis',1],['Installment Basis',2]]
     @gender = [['Male',1],['Female',2]]
     @relationships = [['Father',1],['Mother',2],['Sister',3],['Brother',4],['Relative',5]]
+    @statuses = [['Active',1],['InActive',2]]
+    @due_of_payments = [['Monthly',1],['Quarterly',2],['Semi-Annual',3]]
   end
 
   def student_params
     params.require(:student).permit(:first_name, :middle_name, :last_name, :extension_name, :student_number, 
       :school_year_id, :payment_method, :year_level_id, :balance, :tuition_fee_id, 
-      :guardian_name, :guardian_relationship, :contact_number, :present_address, :gender, :birth_date)
+      :guardian_name, :guardian_relationship, :contact_number1, :contact_number2, :contact_number3, :present_address, :gender, :birth_date, :status, :due_of_payment_id)
   end
 
 end
