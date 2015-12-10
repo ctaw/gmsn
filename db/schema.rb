@@ -122,8 +122,8 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.string   "school_year_id"
     t.integer  "payment_method"
     t.integer  "year_level_id"
+    t.integer  "payment_terms_id"
     t.integer  "tuition_fee_id"
-    t.integer  "due_of_payment_id"
     t.string   "guardian_name"
     t.string   "guardian_relationship"
     t.integer  "contact_number1",       limit: 8
@@ -142,6 +142,7 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.string   "student_number"
     t.integer  "cash_basis_fee_id"
     t.integer  "installment_basis_fee_id"
+    t.string   "due_of_payment_ids",       default: [], array: true
     t.decimal  "balance"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -7,5 +7,9 @@ module ApplicationHelper
   def format_date(date)
     return date.blank? ? "" : date.strftime("%B %d, %Y")
   end
+
+  def today_date
+    DateTime.now.to_date
+  end
   
 end

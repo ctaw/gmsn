@@ -1,5 +1,7 @@
 class Student < ActiveRecord::Base
 
+  serialize :due_of_payment_ids, Array
+
   has_many :payment_histories
   belongs_to :year_level
   belongs_to :school_year
@@ -47,6 +49,17 @@ class Student < ActiveRecord::Base
       "Active"
     when 2
       "InActive"
+    end
+  end
+
+  def get_payment_terms
+    case self.payment_terms_id
+    when 1
+      "Monthly"
+    when 2
+      "Quarterly"
+    when 3
+      "Semi-Annual"
     end
   end
 

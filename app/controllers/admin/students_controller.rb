@@ -15,10 +15,12 @@ class Admin::StudentsController < AdminController
     @student = Student.new(student_params)
     sy = params[:student][:school_year_id]
     yl = params[:student][:year_level_id]
+    pyi = params[:student][:payment_terms_id]
     payment_method = params[:student][:payment_method]
     @cbf = ""
     @ibf = ""
     @balance = ""
+    @due_id = ""
 
     # Getting TF
     if payment_method == "1"
@@ -30,7 +32,7 @@ class Admin::StudentsController < AdminController
         @balance = cash.total_fee
       end
     else
-      installment = InstallmentBasisFee.where(:school_year_id => sy).where(:year_level_id => yl).first
+      installment = InstallmentBasisFee.where(:school_year_id => sy).where(:year_level_id => yl).where(:payment_terms => pyi).first
       @student.tuition_fee_id = installment.id
       @ibf = installment.id
       if params[:balance] == ""
@@ -38,8 +40,10 @@ class Admin::StudentsController < AdminController
       end
     end
 
+
     if @student.save
-      @tuition = TuitionFee.new({:student_id => @student.id, :student_number => @student.student_number, :cash_basis_fee_id => @cbf, :installment_basis_fee_id => @ibf, :balance => @balance})
+      @due_ids = DueOfPayment.where(:installment_basis_fee_id => @ibf).pluck(:id)
+      @tuition = TuitionFee.new({:student_id => @student.id, :student_number => @student.student_number, :cash_basis_fee_id => @cbf, :installment_basis_fee_id => @ibf, :due_of_payment_ids => @due_ids, :balance => @balance})
       @tuition.save
       redirect_to "/admin/students"
     else
@@ -90,13 +94,13 @@ class Admin::StudentsController < AdminController
     @gender = [['Male',1],['Female',2]]
     @relationships = [['Father',1],['Mother',2],['Sister',3],['Brother',4],['Relative',5]]
     @statuses = [['Active',1],['InActive',2]]
-    @due_of_payments = [['Monthly',1],['Quarterly',2],['Semi-Annual',3]]
+    @payment_terms = [['Monthly',1],['Quarterly',2],['Semi-Annual',3]]
   end
 
   def student_params
     params.require(:student).permit(:first_name, :middle_name, :last_name, :extension_name, :student_number, 
-      :school_year_id, :payment_method, :year_level_id, :balance, :tuition_fee_id, 
-      :guardian_name, :guardian_relationship, :contact_number1, :contact_number2, :contact_number3, :present_address, :gender, :birth_date, :status, :due_of_payment_id)
+      :school_year_id, :payment_method, :payment_terms_id, :year_level_id, :balance, :tuition_fee_id, 
+      :guardian_name, :guardian_relationship, :contact_number1, :contact_number2, :contact_number3, :present_address, :gender, :birth_date, :status)
   end
 
 end

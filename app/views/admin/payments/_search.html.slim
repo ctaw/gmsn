@@ -1,0 +1,19 @@
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Payment Form
+      .panel-body
+        br
+        = form_tag(new_admin_payment_path, :html => {:class => "form-horizontal form-border"}, :method => :get) do
+          .form-group
+            label.col-sm-3.control-label Student Number
+            .col-sm-6              
+              = text_field_tag :search, params[:search], :class=>"form-control"
+            .col-sm-3
+              = submit_tag "Search", :class => "btn btn-success"
+        br
+        br
+        br
+        br
+          

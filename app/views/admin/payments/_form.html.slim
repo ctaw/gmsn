@@ -4,46 +4,95 @@
       .panel-heading
         h3.panel-title Payment Form
       .panel-body
-        = form_for([:admin, @payment], :html => {:class => "form-horizontal form-border"}) do |f|
-          .form-group
-            label.col-sm-3.control-label Student Number
-            .col-sm-6
-              = f.text_field :student_number, :class=>"form-control"
-          .form-group
-            label.col-sm-3.control-label In Payment of
-            .col-sm-3
-              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
-            .col-sm-3
-              =f.select(:year_level_id, options_from_collection_for_select(@year_levels,"id","name", f.object.year_level_id),{},:class =>"form-control")
-          .form-group
-            label.col-sm-3.control-label What to pay?
-            .col-sm-3
-              =f.select(:pay_id, options_for_select(@pays,f.object.pay_id),{},:class=>"form-control")
-            .col-sm-3
-              = f.text_field :description, :class=>"form-control", :placeholder => "Description"
-          .form-group
-            label.col-sm-3.control-label With Discount?
-            .col-sm-6
-              =f.select(:discount_id, options_from_collection_for_select(@discounts,"id","get_discount", f.object.discount_id),{:include_blank => 'Select Discount (Optional)'},:class =>"form-control")
-          .form-group
-            label.col-sm-3.control-label Amount Paid
-            .col-sm-6
-              = f.text_field :amount_paid, :class=>"form-control"
-          .form-group
-            label.col-sm-3.control-label Penalty
-            .col-sm-6
-              = f.text_field :penalty, :class=>"form-control"
-          .form-group
-            label.col-sm-3.control-label Date Paid
-            .col-sm-6
-              = f.text_field :date_paid, :class=>"form-control date "
-          .form-group
-            label.col-sm-3.control-label Received By
-            .col-sm-6
-              = f.text_field :received_by, :class=>"form-control"
-          .row 
+        .col-md-6
+          = form_for([:admin, @payment], :html => {:class => "form-horizontal form-border"}) do |f|
+            .form-group
+              label.col-sm-4.control-label Student Number
+              .col-sm-8
+                = f.text_field :student_number, :class=>"form-control", :value => params[:search], :disabled=>"disabled"
+            .form-group
+              label.col-sm-4.control-label What to pay?
+              .col-sm-4
+                =f.select(:pay_id, options_for_select(@pays,f.object.pay_id),{},:class=>"form-control")
+              .col-sm-4
+                = f.text_field :description, :class=>"form-control", :placeholder => "Description"
+            .form-group
+              label.col-sm-4.control-label With Discount?
+              .col-sm-8
+                =f.select(:discount_id, options_from_collection_for_select(@discounts,"id","get_discount", f.object.discount_id),{:include_blank => 'Select Discount (Optional)'},:class =>"form-control")
+            .form-group
+              label.col-sm-4.control-label Amount Paid
+              .col-sm-8
+                = f.text_field :amount_paid, :class=>"form-control"
+            .form-group
+              label.col-sm-4.control-label Penalty
+              .col-sm-8
+                = f.text_field :penalty, :class=>"form-control"
+            .form-group
+              label.col-sm-4.control-label Date Paid
+              .col-sm-8
+                = f.text_field :date_paid, :class=>"form-control date "
+            .form-group
+              label.col-sm-4.control-label Received By
+              .col-sm-8
+                = f.text_field :received_by, :class=>"form-control"
+            .row 
+              .col-md-12
+                hr
+                .btn-group.pull-right
+                  a.btn.btn-default href="/admin/payments" Cancel
+                  = f.submit "Save", :class => "btn btn-success"
+            
+            br
+        .col-md-6
+          #tuition-fee
             .col-md-12
-              hr
-              .btn-group.pull-right
-                a.btn.btn-default href="/admin/payments" Cancel
-                = f.submit "Save", :class => "btn btn-success"
+              .panel.panel-default
+                .panel-heading
+                  h3.panel-title = @student.full_name
+                .panel-body
+                  .row
+                    label.col-md-8.title = @payment_method
+                    .col-md-4.title
+                      a.btn.btn-default.btn-sm href="/admin/students/#{@student.id}" target="_blank" Payment History
+                  br
+                  .row
+                    label.col-md-4.title Balance
+                    .col-md-8.title = number_to_currency(@details_tf.balance, :unit => "₱")
+                  .row
+                    label.col-md-4.title Today's Date
+                    .col-md-8.title = format_date(DateTime.now.to_date)
+                  br
+                  .row
+                    label.col-md-4.title Tuition Fee
+                    .col-md-8.title = number_to_currency(@tuition_detail.tuition_fee, :unit => "₱")
+                  .row
+                    label.col-md-4.title School Year
+                    .col-md-8.title = @tuition_detail.school_year.name
+                  .row
+                    label.col-md-4.title Year Level
+                    .col-md-8.title = @tuition_detail.year_level.name
+                  .row
+                    label.col-md-4.title Terms
+                    .col-md-8.title = @student.get_payment_terms
+
+                  br
+                  .row
+                    .col-md-12
+                      table.table.table-hover
+                        thead
+                          tr
+                            th Due Date
+                            th Amount
+                            th Total Penalty
+                            th Penalty
+                        tbody
+                          - @due_details.each do |due|
+                            tr
+                              td = due.due_date
+                              td = number_to_currency(due.amount, :unit => "₱")
+                              - @delayed = (today_date - due.due_date.to_date).to_i
+                              - @penalty = (@delayed.to_i * 15)
+                              - @to_penalty = (due.amount + @penalty)
+                              td = number_to_currency(@to_penalty, :unit => "₱")
+                              td = number_to_currency(@penalty, :unit => "₱")

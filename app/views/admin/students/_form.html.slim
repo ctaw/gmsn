@@ -25,23 +25,7 @@
               = f.text_field :student_number, :class=>"form-control"
             .col-sm-3
               =f.select(:status, options_for_select(@statuses,f.object.status),{},:class=>"form-control")
-          .form-group
-            label.col-sm-3.control-label
-            .col-sm-3
-              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
-            .col-sm-3
-              =f.select(:year_level_id, options_from_collection_for_select(@year_levels,"id","name", f.object.year_level_id),{},:class =>"form-control")
-          .form-group
-            label.col-sm-3.control-label
-            .col-sm-3
-              input.form-control placeholder=("Balance (Optional)") type="text" id="balance" name="balance"
-            .col-sm-3
-              =f.select(:payment_method, options_for_select(@payment_methods,f.object.payment_method),{},:class=>"form-control")
-          #payment-terms
-            .form-group
-              label.col-sm-3.control-label Terms of Payment
-              .col-sm-6
-                =f.select(:due_of_payment_id, options_for_select(@due_of_payments,f.object.due_of_payment_id),{},:class=>"form-control")
+         
           .form-group
             label.col-sm-3.control-label
             .col-sm-2
@@ -65,7 +49,29 @@
             .col-sm-3
               =f.select(:gender, options_for_select(@gender,f.object.gender),{},:class=>"form-control")
             .col-sm-3
-              = f.text_field :birth_date, :class=>"form-control date", :placeholder => "BirthDate"
+              = f.text_field :birth_date, :class=>"form-control date", :placeholder => "BirthDate"  
+          br
+          hr
+          br
+          / Tuition Fee Information =======
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              =f.select(:school_year_id, options_from_collection_for_select(@school_years,"id","name", f.object.school_year_id),{},:class =>"form-control")
+            .col-sm-3
+              =f.select(:year_level_id, options_from_collection_for_select(@year_levels,"id","name", f.object.year_level_id),{},:class =>"form-control")
+
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              =f.select(:payment_method, options_for_select(@payment_methods,f.object.payment_method),{},:class=>"form-control")
+            .col-sm-3
+              input.form-control placeholder=("Balance (Optional)") type="text" id="balance" name="balance"
+          .form-group
+            label.col-sm-3.control-label
+            .col-sm-3
+              #payment-terms
+                =f.select(:payment_terms_id, options_for_select(@payment_terms,f.object.payment_terms_id),{},:class=>"form-control")
           .row 
             .col-md-12
               hr

@@ -9,8 +9,8 @@ class CreateTables < ActiveRecord::Migration
       t.string :school_year_id
       t.integer :payment_method # Cash or Installment
       t.integer :year_level_id
+      t.integer :payment_terms_id # Payment Terms if not cash
       t.integer :tuition_fee_id
-      t.integer :due_of_payment_id
       # Personal Information
       t.string :guardian_name
       t.string :guardian_relationship
@@ -30,6 +30,7 @@ class CreateTables < ActiveRecord::Migration
       t.string :student_number
       t.integer :cash_basis_fee_id
       t.integer :installment_basis_fee_id
+      t.string :due_of_payment_ids, array: true, default: []
       t.decimal :balance
       t.timestamps
     end

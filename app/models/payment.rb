@@ -8,5 +8,8 @@ class Payment < ActiveRecord::Base
     self.referrence_number = SecureRandom.hex(8) 
   end
 
+  def self.search(search)
+    where("student_number LIKE ?", "%#{search}%")
+  end
   
 end

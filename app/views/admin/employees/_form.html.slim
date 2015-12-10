@@ -20,7 +20,7 @@
           .form-group
             label.col-sm-3.control-label Position
             .col-sm-6
-              =f.select(:role_id, options_for_select(@roles,f.object.role_id),{},:class=>"form-control")
+              =f.select(:role_id, optionsb_for_select(@roles,f.object.role_id),{},:class=>"form-control")
           .form-group
             label.col-sm-3.control-label Date Hired
             .col-sm-6

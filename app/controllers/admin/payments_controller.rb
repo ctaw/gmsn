@@ -7,86 +7,29 @@ class Admin::PaymentsController < AdminController
 
   def new
     @payment = Payment.new
+
+    # Variables
+    @search_sn = params[:search]
+    @payment_method = ""
+    @tuition_detail = ""
+
+    @student = Student.where(:student_number => @search_sn).first
+    @details_tf = TuitionFee.where(:student_number => @search_sn).first
+
+    # Payment Method
+    if @details_tf.cash_basis_fee_id.nil?
+      @payment_method = "Installment Basis Tuition Fee"
+      @tuition_detail = InstallmentBasisFee.find(@details_tf.installment_basis_fee_id)
+      @due_details = DueOfPayment.where(:installment_basis_fee_id => 14)
+    else
+      @payment_method = "Cash Basis Payment"
+      
+    end
   end
 
   def create
     @payment = Payment.new(payment_params)
     @payment.generate_referrence_number
-
-    sn = params[:payment][:student_number]
-    pay_id = params[:payment][:pay_id]
-
-    student = Student.where(:student_number => sn).first
-    @balance = ""
-
-    # ======== If Tuition Fee ========
-    if pay_id = 1
-
-      @tution = TuitionFee.where(:student_id => student.id).where(:student_number => student.student_number).first
-      # ====== if Cash or Installment basis ======
-      if !@tution.cash_basis_fee_id.nil?
-        @tf = CashBasisFee.find(@tution.cash_basis_fee_id)
-        @tuition_fee_amount = @tf.total_fee
-      else
-        @tf = InstallmentBasisFee.find(@tution.installment_basis_fee_id)
-        @tuition_fee_amount = @tf.tuition_fee
-      end
-      
-      # @tuition_fee_amount ( this is the total fee of the student )
-
-    end
-    # ======== If Tuition Fee ========
-
-    # ======== SAVING PAYMENTS ========
-    if @payment.save
-      
-      # if Student is Exist
-      if TuitionFee.exists?(:student_number => @payment.student_number)
-        
-        # Check If there's a discount
-        if @payment.discount_id.nil?
-
-          puts ">>>>>>>>>>>>>>>>"
-          puts "walang discount"
-
-          # Update Existing Balance
-          
-          @updated_tuition = TuitionFee.find(@tution.id)
-          
-          if !@updated_tuition.balance.nil?
-            @balance = (@updated_tuition.balance.to_f - @payment.amount_paid.to_f) - @payment.penalty.to_f
-          else
-            @balance = (@tuition_fee_amount.to_f - @payment.amount_paid.to_f) - @payment.penalty.to_f
-          end
-          
-        else
-          
-          puts ">>>>>>>>>>>>>>>>"
-          puts "may discount"
-
-          # Get Discount Percentage
-          @dis = Discount.find(@payment.discount_id)
-          @dis_percent = @dis.percentage.to_f
-
-          @tol_discount = (@tuition_fee_amount.to_f * @dis_percent) / 100
-          puts ">>>>>>>>>>>>>"
-          @balance = ((@tuition_fee_amount.to_f - @tol_discount.to_f) - @payment.amount_paid.to_f) - @payment.penalty.to_f
-        end
-
-      else
-        redirect_to "/admin/students/new"
-      end
-
-      # After Saved
-      @updated_tuition = TuitionFee.find(@tution.id)
-      @updated_tuition.update(:balance => @balance)
-      redirect_to "/admin/payments/#{@payment.id}"
-
-    else
-      render :new
-    end
-    # ======== SAVING PAYMENTS ========
-
   end
 
   def show
@@ -104,8 +47,8 @@ class Admin::PaymentsController < AdminController
   end
 
   def payment_params
-    params.require(:payment).permit(:student_number, :school_year_id, :year_level_id, :referrence_number,
-          :pay_id, :description, :discount_id, :amount_paid, :penalty, :date_paid, :received_by)
+    params.require(:payment).permit(:student_number, :school_year_id, :year_level_id, :payment_mode, :payment_terms,
+      :referrence_number, :pay_id, :description, :discount_id, :amount_paid, :penalty, :date_paid, :received_by)
   end
 
 
