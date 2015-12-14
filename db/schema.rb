@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909131856) do
+ActiveRecord::Schema.define(version: 20151214150812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,14 @@ ActiveRecord::Schema.define(version: 20150909131856) do
     t.integer  "uniform_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "penalty_checkers", force: :cascade do |t|
+    t.string  "student_number"
+    t.integer "due_of_payments_id"
+    t.string  "due_date"
+    t.decimal "amount"
+    t.integer "is_paid"
   end
 
   create_table "school_supplies", force: :cascade do |t|

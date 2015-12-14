@@ -12,24 +12,65 @@ class Admin::PaymentsController < AdminController
     @search_sn = params[:search]
     @payment_method = ""
     @tuition_detail = ""
+    
+    if Student.exists?(:student_number => @search_sn)
 
-    @student = Student.where(:student_number => @search_sn).first
-    @details_tf = TuitionFee.where(:student_number => @search_sn).first
+      @student = Student.where(:student_number => @search_sn).first
+      @details_tf = TuitionFee.where(:student_number => @search_sn).first
 
-    # Payment Method
-    if @details_tf.cash_basis_fee_id.nil?
-      @payment_method = "Installment Basis Tuition Fee"
-      @tuition_detail = InstallmentBasisFee.find(@details_tf.installment_basis_fee_id)
-      @due_details = DueOfPayment.where(:installment_basis_fee_id => 14)
+      # Payment Method
+      if @details_tf.cash_basis_fee_id.nil?
+        @payment_method = "Installment Basis Tuition Fee"
+        @tuition_detail = InstallmentBasisFee.find(@details_tf.installment_basis_fee_id)
+        # @due_details = DueOfPayment.where(:installment_basis_fee_id => 14)
+        @due_details = PenaltyChecker.where(:student_number => @search_sn)
+        @due_dates = PenaltyChecker.where(:student_number => @search_sn).where(:is_paid => 0)
+
+      else
+        @payment_method = "Cash Basis Payment"
+        
+      end
     else
-      @payment_method = "Cash Basis Payment"
-      
+
+      flash[:notice] = "Student Number doesn't exist!"
+      redirect_to "/admin/payments/"
+
     end
   end
 
   def create
     @payment = Payment.new(payment_params)
-    @payment.generate_referrence_number
+    
+    @student = Student.where(:student_number => params[:payment][:student_number]).first
+
+    @payment.school_year_id = @student.school_year_id
+    @payment.year_level_id = @student.year_level_id
+    @payment.payment_mode = @student.payment_method
+    @payment.payment_terms = @student.payment_terms_id
+    @payment.referrence_number = @payment.generate_referrence_number
+    
+    
+
+    # SAVE PAYMENT
+    if @payment.save
+
+      # Update Penalty Checker
+      @paid_due = params[:due_date]
+      @update_penalty = PenaltyChecker.find(@paid_due)
+      @update_penalty.update_attributes(:is_paid => 1)
+
+      # Update Balance
+      @tf_update = TuitionFee.where(:student_number => params[:payment][:student_number]).first
+      @balance_update = TuitionFee.find(@tf_update.id)
+      ####Computation ---->
+      @balance = (@tf_update.balance.to_f - @payment.amount_paid.to_f)
+      @balance_update.update_attributes(:balance => @balance.to_f)
+
+      redirect_to "/admin/payments/#{@payment.id}"
+    else
+      render :new
+    end
+
   end
 
   def show

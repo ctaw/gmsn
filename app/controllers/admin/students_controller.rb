@@ -40,9 +40,18 @@ class Admin::StudentsController < AdminController
       end
     end
 
-
+  
+    
     if @student.save
       @due_ids = DueOfPayment.where(:installment_basis_fee_id => @ibf).pluck(:id)
+
+      # new function for penalty checker
+      @checkers = DueOfPayment.select("id, due_date, amount").where(id: @due_ids)
+      @checkers.each do |c|
+        PenaltyChecker.create!([:student_number => @student.student_number, :due_of_payments_id => c.id, :due_date => c.due_date, :amount => c.amount, :is_paid => 0])
+      end
+      # new function for penalty checker
+
       @tuition = TuitionFee.new({:student_id => @student.id, :student_number => @student.student_number, :cash_basis_fee_id => @cbf, :installment_basis_fee_id => @ibf, :due_of_payment_ids => @due_ids, :balance => @balance})
       @tuition.save
       redirect_to "/admin/students"
