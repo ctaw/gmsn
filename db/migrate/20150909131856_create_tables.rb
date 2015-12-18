@@ -71,7 +71,9 @@ class CreateTables < ActiveRecord::Migration
       t.string :referrence_number
       t.integer :pay_id # [School Uniform, PE Uniform, School Supplies or Tuition Fee]
       t.string :description
-      t.integer :discount_id # can be null
+      t.integer :first_discount_id # can be null
+      t.integer :two_discount_id # can be null
+      t.integer :third_discount_id # can be null
       t.decimal :amount_paid
       t.decimal :penalty, :default => 0.0
       t.datetime :date_paid

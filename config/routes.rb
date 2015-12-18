@@ -9,7 +9,11 @@ Rails.application.routes.draw do
     resources :students
     resources :employees
     resources :tuition_fee_module
-    resources :payments
+    resources :payments do
+      collection do
+        get 'discount_checker'
+      end
+    end
 
     # CRUDS
     resources :school_years

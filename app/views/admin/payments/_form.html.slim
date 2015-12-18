@@ -22,7 +22,17 @@
                 .form-group
                   label.col-sm-4.control-label With Discount?
                   .col-sm-8
-                    =f.select(:discount_id, options_from_collection_for_select(@discounts,"id","get_discount", f.object.discount_id),{:include_blank => 'Select Discount (Optional)'},:class =>"form-control")
+                    =f.select(:first_discount_id, options_from_collection_for_select(@discounts,"id","get_discount", f.object.first_discount_id),{:include_blank => 'Select Discount (Optional)'},:class =>"form-control")
+                    =f.select(:two_discount_id, options_from_collection_for_select(@discounts,"id","get_discount", f.object.two_discount_id),{:include_blank => 'Select Discount (Optional)'},:class =>"form-control")
+                    =f.select(:third_discount_id, options_from_collection_for_select(@discounts,"id","get_discount", f.object.third_discount_id),{:include_blank => 'Select Discount (Optional)'},:class =>"form-control")
+                    br
+                    button.btn.btn-default.btn-sm#discount-checker type="button" Discount Computation
+                    br
+                    .discount-result.hidden
+                      .well
+                        .row
+                          label.col-md-4.title#discount 
+                          .col-md-8.title#none
                 .form-group
                   label.col-sm-4.control-label Amount Paid
                   .col-sm-8
@@ -43,15 +53,17 @@
                   label.col-sm-4.control-label Received By
                   .col-sm-8
                     = f.text_field :received_by, :class=>"form-control"
+
                 .row 
                   .col-md-12
                     hr
                     .btn-group.pull-right
                       a.btn.btn-default href="/admin/payments" Cancel
                       = f.submit "Save", :class => "btn btn-success"
-                
+              
                 br
             .col-md-6
+
               #tuition-fee
                 .col-md-12
                   .panel.panel-default
@@ -66,54 +78,114 @@
                       .row
                         label.col-md-4.title Balance
                         .col-md-8.title = number_to_currency(@details_tf.balance, :unit => "₱")
+                      br
                       .row
                         label.col-md-4.title Today's Date
                         .col-md-8.title = format_date(DateTime.now.to_date)
                       br
-                      .row
-                        label.col-md-4.title Tuition Fee
-                        .col-md-8.title = number_to_currency(@tuition_detail.tuition_fee, :unit => "₱")
-                      .row
-                        label.col-md-4.title School Year
-                        .col-md-8.title = @tuition_detail.school_year.name
-                      .row
-                        label.col-md-4.title Year Level
-                        .col-md-8.title = @tuition_detail.year_level.name
-                      .row
-                        label.col-md-4.title Terms
-                        .col-md-8.title = @student.get_payment_terms
-                      br
-                      .row
-                        .col-md-12
-                          .well
-                            h4.text-center 
-                              | TODAY is
-                              | :&nbsp
-                              = format_date(today_date)
-                    
-        .row
-          .col-md-12
-          
-            table.table.table-hover
-              thead
-                tr
-                  th Due Date
-                  th Amount
-                  th Is Paid?
-                  th Penalty Today
-                  th Total Penalty if not yet paid since due date
-              tbody
-                - @due_details.each do |due|
-                  tr
-                    td = due.due_date
-                    td = number_to_currency(due.amount, :unit => "₱")
-                    - @delayed = (today_date - due.due_date.to_date).to_i
-                    - @penalty = (@delayed.to_i * 15)
-                    - @to_penalty = (due.amount + @penalty)
-                    td 
-                      - if due.is_paid == 0
-                        = "No"
+                      - if @student.payment_method == 1
+                        .row
+                          label.col-md-4.title Total Tuition Fee
+                          .col-md-8.title = number_to_currency(@cash_tuition_detail.total_fee, :unit => "₱")
+                        .row
+                          label.col-md-4.title Tuition Fee (Only)
+                          .col-md-8.title = number_to_currency(@cash_tuition_detail.tuition_fee, :unit => "₱")
+                        .row
+                          label.col-md-4.title Miscellaneous
+                          .col-md-8.title = number_to_currency(@cash_tuition_detail.miscellaneous, :unit => "₱")
+                        br
+                        .row
+                          label.col-md-4.title School Year
+                          .col-md-8.title = @cash_tuition_detail.school_year.name
+                        .row
+                          label.col-md-4.title Year Level
+                          .col-md-8.title = @cash_tuition_detail.year_level.name
+                        
+                        br
+                        .row
+                          .col-md-12
+                            .well
+                              h4.text-center 
+                                | TODAY is
+                                | :&nbsp
+                                = format_date(today_date)
+
                       -else
-                        = "Yes"
-                    td = number_to_currency(@penalty, :unit => "₱")
-                    td = number_to_currency(@to_penalty, :unit => "₱")
+                        .row
+                          label.col-md-4.title DownPayment
+                          .col-md-8.title = number_to_currency(@ins_tuition_detail.down_payment, :unit => "₱")
+                        .row
+                          label.col-md-4.title Tuition Fee (Only)
+                          .col-md-8.title = number_to_currency(@ins_tuition_detail.tuition_fee, :unit => "₱")
+                        br
+                        .row
+                          label.col-md-4.title School Year
+                          .col-md-8.title = @ins_tuition_detail.school_year.name
+                        .row
+                          label.col-md-4.title Year Level
+                          .col-md-8.title = @ins_tuition_detail.year_level.name
+                        .row
+                          label.col-md-4.title Terms
+                          .col-md-8.title = @student.get_payment_terms
+                        br
+                        .row
+                          .col-md-12
+                            .well
+                              h4.text-center 
+                                | TODAY is
+                                | :&nbsp
+                                = format_date(today_date)
+                    
+        
+        - if @student.payment_method == 2
+          - if @student.payment_terms_id = 1
+          
+          - elsif @student.payment_terms_id = 2
+            .row
+              .col-md-12
+              
+                table.table.table-hover
+                  thead
+                    tr
+                      th Due Date
+                      th Amount
+                      th Is Paid?
+                      th Penalty Today
+                      th Total Penalty if not yet paid since due date
+                  tbody
+                    - @due_details.each do |due|
+                      tr
+                        td = due.due_date
+                        td = number_to_currency(due.amount, :unit => "₱")
+                        - @delayed = (today_date - due.due_date.to_date).to_i
+                        - @penalty = (@delayed.to_i * 15)
+                        - @to_penalty = (due.amount + @penalty)
+                        td 
+                          - if due.is_paid == 0
+                            = "No"
+                          -else
+                            = "Yes"
+                        td = number_to_currency(@penalty, :unit => "₱")
+                        td = number_to_currency(@to_penalty, :unit => "₱")
+
+
+          - elsif @student.payment_terms_id = 2
+          - else
+          
+javascript:
+  $("#discount-checker").click(function(){
+    var student_number = $("#payment_student_number"),
+        first_discount = $("#payment_first_discount_id"),
+        second_discount = $("#payment_two_discount_id"),
+        third_discount = $("#payment_third_discount_id");
+    $.ajax({
+      type: 'GET',
+      url: "/admin/payments/discount_checker",
+      data : {
+        student_number : student_number.val(),
+        first_discount : first_discount.val(),
+        second_discount : second_discount.val(),
+        third_discount : third_discount.val()
+      }
+    });
+  });

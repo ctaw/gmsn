@@ -146,8 +146,8 @@ section#main-content.animated.fadeInUp
                   tr
                     td = format_date(p.date_paid)
                     td = number_to_currency(p.amount_paid, :unit => "₱")
-                    - if !p.discount_id.nil?
-                      td = p.discount.name + " - " + p.discount.get_percentage
+                    - if !p.first_discount_id.nil?
+                      td = p.discount.name + " - " + p.discount.get_percentage 
                     - else
                       td none
           .text-center

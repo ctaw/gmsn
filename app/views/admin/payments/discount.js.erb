@@ -1,0 +1,7 @@
+$(".discount-result").removeClass("hidden");
+
+var discount = "";
+
+$('#discount').html('<%= number_to_currency(@total_amount_discounted , :unit => "₱", :precision => 2) %>'); 
+$('#none').html('<%= @none %>'); 
+

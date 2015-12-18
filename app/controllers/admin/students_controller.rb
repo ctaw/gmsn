@@ -45,15 +45,24 @@ class Admin::StudentsController < AdminController
     if @student.save
       @due_ids = DueOfPayment.where(:installment_basis_fee_id => @ibf).pluck(:id)
 
-      # new function for penalty checker
-      @checkers = DueOfPayment.select("id, due_date, amount").where(id: @due_ids)
-      @checkers.each do |c|
-        PenaltyChecker.create!([:student_number => @student.student_number, :due_of_payments_id => c.id, :due_date => c.due_date, :amount => c.amount, :is_paid => 0])
-      end
-      # new function for penalty checker
-
       @tuition = TuitionFee.new({:student_id => @student.id, :student_number => @student.student_number, :cash_basis_fee_id => @cbf, :installment_basis_fee_id => @ibf, :due_of_payment_ids => @due_ids, :balance => @balance})
       @tuition.save
+
+      if @student.payment_method == 2
+        # new function for penalty checker
+        @checkers = DueOfPayment.select("id, due_date, amount").where(id: @due_ids)
+        @checkers.each do |c|
+          PenaltyChecker.create!([:student_number => @student.student_number, :due_of_payments_id => c.id, :due_date => c.due_date, :amount => c.amount, :is_paid => 0])
+        end
+        # new function for penalty checker
+      else
+        @tff = TuitionFee.where(:student_number => @student.student_number).first
+        @cbfa = CashBasisFee.find(@tff.cash_basis_fee_id)
+        @amount_cash = @cbfa.total_fee.to_f
+        PenaltyChecker.create!(:student_number => @student.student_number, :due_date => DateTime.now.to_date, :amount => @amount_cash, :is_paid => 0 )
+      end
+
+      
       redirect_to "/admin/students"
     else
       render :new
@@ -71,7 +80,7 @@ class Admin::StudentsController < AdminController
       @student_tuition = InstallmentBasisFee.find(@tuition_fee.installment_basis_fee_id)
     end
     
-    @payments = Payment.select("date_paid, amount_paid, discount_id").where(:student_number => @student.student_number).order("date_paid DESC").paginate(:page => params[:payments], :per_page => 5)
+    @payments = Payment.select("date_paid, amount_paid, first_discount_id, two_discount_id, third_discount_id").where(:student_number => @student.student_number).order("date_paid DESC").paginate(:page => params[:payments], :per_page => 5)
   end
 
   def edit
@@ -79,7 +88,7 @@ class Admin::StudentsController < AdminController
 
   def update
     if @student.update(student_params)
-      redirect_to "/admin/students"
+      redirect_to "/admin/students", :notice => "Student was successfully updated!"
     else
       render :edit
     end

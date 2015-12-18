@@ -73,7 +73,9 @@ ActiveRecord::Schema.define(version: 20151214150812) do
     t.string   "referrence_number"
     t.integer  "pay_id"
     t.string   "description"
-    t.integer  "discount_id"
+    t.integer  "first_discount_id"
+    t.integer  "two_discount_id"
+    t.integer  "third_discount_id"
     t.decimal  "amount_paid"
     t.decimal  "penalty",           default: 0.0
     t.datetime "date_paid"

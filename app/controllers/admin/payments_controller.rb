@@ -18,24 +18,32 @@ class Admin::PaymentsController < AdminController
       @student = Student.where(:student_number => @search_sn).first
       @details_tf = TuitionFee.where(:student_number => @search_sn).first
 
+
       # Payment Method
       if @details_tf.cash_basis_fee_id.nil?
+        
         @payment_method = "Installment Basis Tuition Fee"
-        @tuition_detail = InstallmentBasisFee.find(@details_tf.installment_basis_fee_id)
-        # @due_details = DueOfPayment.where(:installment_basis_fee_id => 14)
+        @ins_tuition_detail = InstallmentBasisFee.find(@details_tf.installment_basis_fee_id)
         @due_details = PenaltyChecker.where(:student_number => @search_sn)
         @due_dates = PenaltyChecker.where(:student_number => @search_sn).where(:is_paid => 0)
 
       else
+        @cash_tuition_detail = CashBasisFee.find(@details_tf.cash_basis_fee_id)
+        @due_dates = PenaltyChecker.where(:student_number => @search_sn).where(:is_paid => 0)
         @payment_method = "Cash Basis Payment"
         
       end
+
+
     else
 
       flash[:notice] = "Student Number doesn't exist!"
       redirect_to "/admin/payments/"
 
     end
+
+    @hi = ""
+
   end
 
   def create
@@ -78,6 +86,99 @@ class Admin::PaymentsController < AdminController
     @student = Student.where(:student_number => @payment.student_number).first
   end
 
+  def discount_checker
+    
+
+    @f = 0;
+    @s = 0;
+    @t = 0;
+
+    @total_discount = 0;
+
+    @sn = params[:student_number]
+    @f = params[:first_discount]
+    @s = params[:second_discount]
+    @t = params[:third_discount]
+
+    @get_student = TuitionFee.where(:student_number => @sn).first
+    @get_balance = @get_student.balance.to_f
+
+
+
+    if @f.to_i > 0 && @s.to_i <=0 && @t.to_i <=0
+
+      @f_discount = Discount.find(@f)
+      @dis_percentage = @f_discount.percentage
+      @dis = (@dis_percentage.to_f/100)
+
+      @sub_to_total = (@get_balance.to_f * @dis.to_f)
+      @total_amount_discounted = (@get_balance - @sub_to_total)
+
+      @none = "Total"
+    elsif @f.to_i > 0 && @s.to_i > 0 && @t.to_i <=0
+      
+      # ======= 1st Discount
+      @f_discount = Discount.find(@f.to_i)
+      @dis_percentage1 = @f_discount.percentage
+
+      @dis1 = (@dis_percentage1.to_f/100)
+      @sub_to_total1 = (@get_balance.to_f * @dis1.to_f)
+      @total_discount1 = (@get_balance.to_f - @sub_to_total1.to_f)
+
+      # ======= 2nd Discount
+      @s_discount = Discount.find(@s.to_i)
+      @dis_percentage2 = @s_discount.percentage
+
+      @dis2 = (@dis_percentage2.to_f/100)
+      @sub_to_total2 = (@total_discount1.to_f * @dis2.to_f)
+      @total_discount2 = (@total_discount1.to_f - @sub_to_total2.to_f)
+
+      @total_amount_discounted = @total_discount2.to_f
+      
+      @none = "Total"
+    elsif @f.to_i > 0 && @s.to_i > 0 && @t.to_i > 0
+
+      # ======= 1st Discount
+      @f_discount = Discount.find(@f.to_i)
+      @dis_percentage1 = @f_discount.percentage
+
+      @dis1 = (@dis_percentage1.to_f/100)
+      @sub_to_total1 = (@get_balance.to_f * @dis1.to_f)
+      @total_discount1 = (@get_balance.to_f - @sub_to_total1.to_f)
+
+      # ======= 2nd Discount
+      @s_discount = Discount.find(@s.to_i)
+      @dis_percentage2 = @s_discount.percentage
+
+      @dis2 = (@dis_percentage2.to_f/100)
+      @sub_to_total2 = (@total_discount1.to_f * @dis2.to_f)
+      @total_discount2 = (@total_discount1.to_f - @sub_to_total2.to_f)
+
+      
+      # ======= 3rd Discount
+      @t_discount = Discount.find(@t.to_i)
+      @dis_percentage3 = @t_discount.percentage
+
+      @dis3 = (@dis_percentage3.to_f/100)
+      @sub_to_total3 = (@total_discount2.to_f * @dis3.to_f)
+      @total_discount3 = (@total_discount2.to_f - @sub_to_total3.to_f)
+
+      @total_amount_discounted = @total_discount3.to_f
+      
+
+
+      @none = "Total"
+    else
+      @none = "Select Discount"
+    end
+
+    
+    respond_to do |format| 
+      format.js { render :action => "discount" }
+    end 
+
+  end
+
   private
 
   def look_ups
@@ -89,7 +190,7 @@ class Admin::PaymentsController < AdminController
 
   def payment_params
     params.require(:payment).permit(:student_number, :school_year_id, :year_level_id, :payment_mode, :payment_terms,
-      :referrence_number, :pay_id, :description, :discount_id, :amount_paid, :penalty, :date_paid, :received_by)
+      :referrence_number, :pay_id, :description, :first_discount_id, :two_discount_id, :third_discount_id, :amount_paid, :penalty, :date_paid, :received_by)
   end
 
 
