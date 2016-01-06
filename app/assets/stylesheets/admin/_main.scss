@@ -4384,3 +4384,9 @@ div.config h4 a:hover {
   font-weight: 600;
   color: #37429C;
 }
+
+@media print {
+  body {
+    background-color: lightgreen;
+  }
+}

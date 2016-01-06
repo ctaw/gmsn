@@ -62,10 +62,16 @@ class Admin::PaymentsController < AdminController
     # SAVE PAYMENT
     if @payment.save
 
-      # Update Penalty Checker
-      @paid_due = params[:due_date]
-      @update_penalty = PenaltyChecker.find(@paid_due)
-      @update_penalty.update_attributes(:is_paid => 1)
+      if !@paid_due.nil?
+        # Update Penalty Checker
+        @paid_due = params[:due_date]
+        @update_penalty = PenaltyChecker.find(@paid_due)
+        @update_penalty.update_attributes(:is_paid => 1)
+      else
+        @update_penalty = PenaltyChecker.where(:student_number => @payment.student_number).first
+        @upnlty = PenaltyChecker.find(@update_penalty.id)
+        @upnlty.update_attributes(:is_paid => 1)
+      end
 
       # Update Balance
       @tf_update = TuitionFee.where(:student_number => params[:payment][:student_number]).first

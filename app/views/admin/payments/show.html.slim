@@ -1,4 +1,4 @@
-.pageheader
+.pageheader#dont-print
   h1 Payment
   .breadcrumb-wrapper.hidden-xs
     span.label You are here:
@@ -9,86 +9,75 @@
 section#main-content.animated.fadeInUp
   .row
     .col-md-12
-      .panel.panel-default#divPrint
-        .panel-heading
-          h3.panel-title Payment Receipt
+      .panel.panel-default
+        .panel-heading#dont-print
+          h3.panel-title#dont-print Payment Receipt
         .panel-body
-          .row
-            .col-md-12
-              .col-md-4.text-center
-                = image_tag ('logo.png'), :class => "img-circle receipt-logo"
-              .col-md-4.text-center
-                p.receipt-title Grace Montessori School of Novaliches, Inc.
-                p.receipt-details 15 Nicanor Abelardo St., Dona Rosario Subd. Novaliches Proper. Novaliches Q.C
-                p.receipt-details NON-VAT REG TIN 218-696-697-000
-                p.receipt-details Tel. Nos.: 419-0038 | 936-2257
-          br
-          br
-          .row
-            .col-md-12
-              .col-md-4.text-center
-                p.receipt-title1 Official Receipt ( Exempt )
-              .col-md-4.text-center
-                p.details = format_date(Date.today)
-          br
-          .row
-            .col-md-12
-              .col-sm-2.col-sm-offset-2
-                p.title1 Name
-              .col-md-4
-                p.details = @student.full_name
-          .row
-            .col-md-12
-              .col-sm-2.col-sm-offset-2
-                p.title1 Level
-              .col-md-4
-                p.details = @student.year_level.name
-          .row
-            .col-md-12
-              .col-sm-2.col-sm-offset-2
-                p.title1 Mode of Payment
-              .col-md-4
-                p.details = @student.get_payment_method
-          br
-          
-          .row
-            .col-md-12
-              .col-sm-2.col-sm-offset-2
-                p.title1 Amount
-              .col-md-4
-                p.details = number_to_currency(@payment.amount_paid, :unit => "₱")
+          #dont-print
+            .row
+              .col-md-12
+                .col-md-4.text-center
+                  = image_tag ('logo.png'), :class => "img-circle receipt-logo"
+                .col-md-4.text-center
+                  p.receipt-title Grace Montessori School of Novaliches, Inc.
+                  p.receipt-details 15 Nicanor Abelardo St., Dona Rosario Subd. Novaliches Proper. Novaliches Q.C
+                  p.receipt-details NON-VAT REG TIN 218-696-697-000
+                  p.receipt-details Tel. Nos.: 419-0038 | 936-2257
+            br
+            br
 
-          br
-
-          .row
-            .col-md-12
-              .col-sm-2.col-sm-offset-2
-                p.title1 In payment of
-              .col-md-4
-                p.details = @student.school_year.name
-          br
-          .row
-            .col-md-12
-              .col-sm-2.col-sm-offset-2
-                p.title1 Received by
-              .col-md-4
-                p.details = @payment.received_by
-
-          br
-          br
-          a.btn.btn-primary.pull-right href="#" onclick="PrintDiv()"  Print
-              
+          #print-receipt
+            .row
+              .col-xs-12
+                .col-xs-4.text-center
+                  p.receipt-title1#dont-print Official Receipt ( Exempt )
+                .col-xs-4.text-center
+                  p.details = format_date(Date.today)
+            br
+            .row
+              .col-xs-12
+                .col-xs-2.col-xs-offset-2
+                  p.title1 Name
+                .col-xs-4
+                  p.details = @student.full_name
+            .row
+              .col-xs-12
+                .col-xs-2.col-xs-offset-2
+                  p.title1 Level
+                .col-xs-4
+                  p.details = @student.year_level.name
+            .row
+              .col-xs-12
+                .col-xs-2.col-xs-offset-2
+                  p.title1 Mode of Payment
+                .col-xs-4
+                  p.details = @student.get_payment_method
+            br
             
-            
-                          
+            .row
+              .col-xs-12
+                .col-xs-2.col-xs-offset-2
+                  p.title1 Amount
+                .col-xs-4
+                  p.details = number_to_currency(@payment.amount_paid, :unit => "₱")
 
-javascript:
-  function PrintDiv() {    
-   var divToPrint = document.getElementById('divPrint');
-   var popupWin = window.open('', '_blank', 'width=auto,height=auto');
-   popupWin.document.open();
-   popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
-    popupWin.document.close();
-  }
+            br
 
+            .row
+              .col-xs-12
+                .col-xs-2.col-xs-offset-2
+                  p.title1 In payment of
+                .col-xs-4
+                  p.details = @student.school_year.name
+            br
+            .row
+              .col-xs-12
+                .col-xs-2.col-xs-offset-2
+                  p.title1 Received by
+                .col-xs-4
+                  p.details = @payment.received_by
 
+          br
+          br
+          a.btn.btn-primary.pull-right#dont-print href="#" onclick="window.print()"  Print
+           
